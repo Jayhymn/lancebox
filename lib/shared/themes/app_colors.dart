@@ -14,9 +14,12 @@ class AppColors {
 
   static const Color scaffoldWhite = Color(0xFFF8F8F7);
 
-  static const Color black = Color(0xFF232220);
+  // static const Color black = Color(0xFF232220);
+  static const Color black = Color(0xFF333333);
   static const Color white = Color(0xFFFFFFFF);
   static const Color error = Color(0xFFF44336);
   static const Color successColor = Color(0xFF4CAF50);
   static const Color disabled = Color(0xFFB2B2B2);
+
+  static const Color borderColor = Color(0xFFE6E6E6);
 }

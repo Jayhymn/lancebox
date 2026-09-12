@@ -1,5 +1,10 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../shared/constants/errors.dart';
+import '../shared/constants/validators.dart';
 
 // Sign Up Form State
 class SignUpFormState {
@@ -65,6 +70,42 @@ class SignUpFormNotifier extends StateNotifier<SignUpFormState> {
   void removeError(String error) {
     state = state.copyWith(errors: state.errors.where((e) => e != error).toList());
   }
+
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      addError(LanceBoxError.emailIsNull);
+      return "Email is required";
+    } else if (!Validator.emailValidatorRegExp.hasMatch(value)) {
+      addError(LanceBoxError.invalidEmail);
+      return "Invalid email format";
+    } else {
+      removeError(LanceBoxError.emailIsNull);
+      removeError(LanceBoxError.invalidEmail);
+      return null;
+    }
+  }
+
+  String? validatePassword(String? value) { // Return String? to be consistent with other validators
+    if (value == null || value.length < 8) {
+      addError(LanceBoxError.passwordTooShort);
+      return "Password must be at least 8 characters long";
+    } else { // Only remove the error if validation passes
+      removeError(LanceBoxError.passwordTooShort);
+      return null; // Return null when validation passes
+    }
+  }
+
+  bool get isValid {
+    return state.errors.isEmpty && state.email != null && state.password != null;
+  }
+
+  bool submitForm(){
+    if (state.errors.isNotEmpty) {
+      return false;
+    }
+    state = state.copyWith(isLoading: true);
+    return true;
+    }
 }
 
 // Riverpod Provider

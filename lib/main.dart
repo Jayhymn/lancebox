@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lance_box/presentation/views/auth/signup.dart';
+import 'package:lance_box/presentation/views/set_up_profile.dart';
+import 'package:lance_box/shared/shared.dart';
 
 void main() {
   runApp(const ProviderScope(child: MyApp()));
@@ -13,13 +15,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'LanceBox',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: AppThemeData.lightTheme,
       home: const Scaffold(
         appBar: null,
-        body: SignUpScreen(),
+        body: SetUpProfile(),
       ),
     );
   }

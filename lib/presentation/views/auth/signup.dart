@@ -1,12 +1,15 @@
 // import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:lance_box/app.dart';
+import 'package:lance_box/presentation/widgets/default_button.dart';
 import 'package:lance_box/presentation/widgets/email_form_field.dart';
 import 'package:lance_box/presentation/widgets/password_form_field.dart';
-import 'package:lance_box/presentation/widgets/submission_button.dart';
-import 'package:lance_box/states/sign_up_state.dart';
+
+import '../../../states/sign_up_state.dart';
 
 class SignUpScreen extends ConsumerWidget {
   const SignUpScreen({super.key});
@@ -17,91 +20,79 @@ class SignUpScreen extends ConsumerWidget {
     final formNotifier = ref.read(signUpFormProvider.notifier);
 
     return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            const Text(
-              "Looks like you're new here!",
-              textAlign: TextAlign.start,
-            ),
-            SizedBox(
-              height: context.sizeHeight(0.05),
-            ),
-            SizedBox(
-              height: context.sizeHeight(0.05),
-            ),
-            Form(
-              key: formState.formKey,
-              child: Center(
+      child: Center(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                ImagesPaths.appIcon,
+                height: 40,
+                width: 40,
+              ),
+              SizedBox(height: context.sizeHeight(0.05)),
+              Text(
+                "Looks like you're new here!",
+                textAlign: TextAlign.center,
+                style: context.textTheme.titleMedium,
+              ),
+              Text(
+                "Let’s create your account",
+                textAlign: TextAlign.center,
+                style: context.textTheme.titleSmall,
+              ),
+              SizedBox(height: context.sizeHeight(0.05)),
+              Form(
+                key: formState.formKey,
                 child: AutofillGroup(
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       EmailFormField(
-                          onSaved: (value) =>
-                              formNotifier.updateEmail(value ?? ""),
-                          onChanged: (value) {
-                            if (value.isNotEmpty) {
-                              formNotifier
-                                  .removeError(LanceBoxError.emailIsNull);
-                            } else if (Validator.emailValidatorRegExp
-                                .hasMatch(value)) {
-                              formNotifier
-                                  .removeError(LanceBoxError.invalidEmail);
-                            }
-                            return;
-                          },
-                          validator: (value) {
-                            if (value!.isEmpty) {
-                              formNotifier.addError(LanceBoxError.emailIsNull);
-                              return "";
-                            } else if (!Validator.emailValidatorRegExp
-                                .hasMatch(value)) {
-                              formNotifier.addError(LanceBoxError.invalidEmail);
-                              return "";
-                            }
-                            return null;
-                          }),
-                      SizedBox(height: context.dynamicScreenHeight(30)),
-                      PasswordFormField(
-                        onChanged: (value) {
-                          value = value ?? "";
-                          if (value.isNotEmpty) {
-                            formNotifier.removeError(LanceBoxError.passwordIsNull);
-                          } else if (value.length < 8) {
-                            formNotifier.addError(LanceBoxError.passwordTooShort);
-                          }
-                          formNotifier.updatePassword(value);
+                        onSaved: (value) {
+                          formNotifier.updateEmail(value ?? "");
                         },
+                        onChanged: (value) {
+                          formNotifier.validateEmail(value);
+                        },
+                        validator: (value) =>
+                            formNotifier.validateEmail(value ?? ""),
+                        labelText: 'Email Address',
+                      ),
+                      SizedBox(height: context.dynamicScreenHeight(15)),
+                      PasswordFormField(
+                        onChanged: (value) =>
+                            formNotifier.validatePassword(value),
                         onSaved: (value) =>
                             formNotifier.updatePassword(value ?? ""),
-                        validator: (value) {
-                          if (value == null || value.length < 8) {
-                            formNotifier.addError(
-                                LanceBoxError.passwordTooShort);
-                            return "Password too short";
-                          }
-                          formNotifier.removeError(LanceBoxError.passwordTooShort);
-                          return null;
-                        },
+                        validator: (value) =>
+                            formNotifier.validatePassword(value ?? ""),
                         obscureText: formState.obscurePassword,
                         toggleVisibility: formNotifier.togglePasswordVisibility,
+                        labelText: 'Password',
                       ),
-                      SizedBox(height: context.dynamicScreenHeight(10)),
+                      SizedBox(height: context.dynamicScreenHeight(15)),
+                      PasswordFormField(
+                        onChanged: (value) =>
+                            formNotifier.validatePassword(value),
+                        onSaved: (value) =>
+                            formNotifier.updatePassword(value ?? ""),
+                        validator: (value) =>
+                            formNotifier.validatePassword(value ?? ""),
+                        obscureText: formState.obscurePassword,
+                        toggleVisibility: formNotifier.togglePasswordVisibility,
+                        labelText: 'Confirm Password',
+                      ),
+                      SizedBox(height: context.dynamicScreenHeight(15)),
                       FormError(errors: formState.errors),
-                      SizedBox(height: context.dynamicScreenHeight(10)),
-                      SubmissionButton(
+                      SizedBox(height: context.dynamicScreenHeight(15)),
+                      DefaultButton(
                         isLoading: formState.isLoading,
                         onPressed: () async {
-                          if (formState.isLoading) return;
-                          formNotifier.setLoading(true);
-
-                          if (formState.formKey.currentState!.validate()) {
-                            formState.formKey.currentState!.save();
-                            // Handle sign up logic here
+                          if (!formState.isLoading &&
+                              formNotifier.submitForm()) {
+                            // Handle sign up logic
                           }
-
-                          formNotifier.setLoading(false);
                         },
                         text: "Sign Up",
                       )
@@ -109,34 +100,59 @@ class SignUpScreen extends ConsumerWidget {
                   ),
                 ),
               ),
-            ),
-            SizedBox(height: context.sizeHeight(0.02)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                SocialCard(
-                  icon: "assets/icons/google-icon.svg",
-                  press: () async {
-                    // showProgressBar();
-                    // googleSignIn(context);
-                    // await Future.delayed(
-                    //     const Duration(milliseconds: 2500), hideProgressBar);
-                  },
+              SizedBox(height: context.sizeHeight(0.01)),
+              Text(
+                "Or",
+                style: context.textTheme.titleMedium,
+              ),
+              SizedBox(height: context.sizeHeight(0.01)),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SocialCard(
+                    icon: ImagesPaths.google,
+                    press: () {},
+                  ),
+                  SocialCard(
+                    icon: ImagesPaths.facebook,
+                    press: () {},
+                  ),
+                ],
+              ),
+              SizedBox(height: context.dynamicScreenHeight(20)),
+              SizedBox(
+                width: context.dynamicScreenWidth(320),
+                child: RichText(
+                  textAlign: TextAlign.center,
+                  text: TextSpan(
+                    text: 'By signing up you agree to our ',
+                    style: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w400),
+                    children: [
+                      TextSpan(
+                        text: 'Terms and Conditions',
+                        style: const TextStyle(
+                          color: AppColors.secondary,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Navigator.pushNamed(context, '/terms'),
+                      ),
+                      const TextSpan(text: ' and '),
+                      TextSpan(
+                        text: 'Policy',
+                        style: const TextStyle(
+                          color: AppColors.secondary,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () => Navigator.pushNamed(context, '/policy'),
+                      ),
+                    ],
+                  ),
                 ),
-                SocialCard(
-                  icon: "assets/icons/facebook-2.svg",
-                  press: () async {
-
-                    // showProgressBar();
-                    // faceBookSignIn(context);
-                    // await Future.delayed(
-                    //     const Duration(milliseconds: 2500), hideProgressBar);
-                  },
-                ),
-              ],
-            ),
-          ],
+              )
+            ],
+          ),
         ),
       ),
     );
