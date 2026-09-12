@@ -13,8 +13,8 @@ class FormError extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: List.generate(
-          errors.length, (index) => formErrorText(error: errors[index]!)),
+      children: List.generate(errors.length,
+          (index) => formErrorText(context, error: errors[index]!)),
     );
   }
 
@@ -31,7 +31,8 @@ class FormError extends StatelessWidget {
         ),
         SizedBox(
           width: context.dynamicScreenWidth(300),
-          child: Text(error,
+          child: Text(
+            error,
             style: const TextStyle(color: Colors.red),
           ),
         ),

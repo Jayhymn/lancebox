@@ -104,9 +104,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           }
                           return null;
                         },
-                        obscureText: true,
+                        obscureText: obscurePassword,
                         toggleVisibility: (){
-                          setState(() => obscurePassword = !obscurePassword)
+                          setState(() => obscurePassword = !obscurePassword);
                         },
                       ),
                       SizedBox(height: context.dynamicScreenHeight(10)),
