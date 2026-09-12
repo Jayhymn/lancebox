@@ -40,8 +40,9 @@ Follow these steps to install and run LanceBox on your system.
 
 Before you begin, ensure you have the following dependencies and tools installed:
 
-- [Flutter SDK](https://docs.flutter.dev/get-started/install)
-- [Dart SDK](https://dart.dev/get-dart)
+<a href="https://docs.flutter.dev/get-started/install" target="_blank">Flutter SDK</a>
+<a href="https://dart.dev/get-dart" target="_blank">Dart SDK</a>
+
 - An IDE (e.g., Visual Studio Code, Android Studio)
 
 ### Clone the Repository
