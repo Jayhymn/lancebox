@@ -1,20 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:lance_box/app.dart';
 
-class DefaultButton extends StatelessWidget {
+class DefaultButton2 extends StatelessWidget {
   final bool isLoading;
   final VoidCallback onPressed;
   final String text;
+  final Color buttonColor;
 
-  const DefaultButton({
+  const DefaultButton2({
     super.key,
     required this.text,
-    this.press,
     required this.isLoading,
     required this.onPressed,
+    required this.buttonColor,
   });
-
-  final Function? press;
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +26,7 @@ class DefaultButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
           ),
-          backgroundColor: AppColors.primary,
+          backgroundColor: buttonColor,
         ),
         onPressed: isLoading ? null : onPressed, // Disable button if loading
         child: isLoading

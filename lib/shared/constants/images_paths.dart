@@ -13,4 +13,5 @@ class ImagesPaths {
   static const String settings = 'assets/icons/settings.svg';
   static const String success = 'assets/icons/success.svg';
   static const String trashIcon = 'assets/icons/trash-icon.svg';
+  static const String gallery = 'assets/icons/gallery.svg';
 }

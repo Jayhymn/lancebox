@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class SetUpProfileState extends StateNotifier<int> {
-  SetUpProfileState() : super(0); // Default to Business Owner (0)
+  SetUpProfileState() : super(-1); // Default to Business Owner (0)
 
   void selectBusinessOwner() {
     state = 0;
