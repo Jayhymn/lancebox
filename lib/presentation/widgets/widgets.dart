@@ -8,3 +8,6 @@
 // export 'map/list_of_markers.dart';
 // export 'map/overlay_dialog.dart';
 // export 'map/search_bar.dart';
+
+export 'form_error.dart';
+export 'social_card.dart';
