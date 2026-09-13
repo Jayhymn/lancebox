@@ -13,7 +13,7 @@ import '../widgets/dashed_rect_painter.dart';
 import '../widgets/selection_button.dart';
 import 'auth/account_selection_section.dart';
 import 'auth/image_upload_section.dart';
-import 'dashboard/invoice/progress_section.dart';
+import 'dashboard/invoice/widgets/progress_section.dart';
 
 class SetUpProfile extends ConsumerWidget {
   const SetUpProfile({super.key});

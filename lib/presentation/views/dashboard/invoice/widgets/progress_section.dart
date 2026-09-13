@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lance_box/app.dart';
-import 'package:lance_box/presentation/views/dashboard/invoice/progress_item.dart'; // Assuming you're using this for SVG images
+import 'package:lance_box/presentation/views/dashboard/invoice/widgets/progress_item.dart';
 
 class ProgressRow extends StatelessWidget {
   final List<Map<String, dynamic>> progressItems;

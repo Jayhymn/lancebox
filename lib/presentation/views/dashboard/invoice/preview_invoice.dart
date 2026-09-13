@@ -3,7 +3,7 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lance_box/app.dart';
-import 'package:lance_box/presentation/views/dashboard/invoice/progress_section.dart';
+import 'package:lance_box/presentation/views/dashboard/invoice/widgets/progress_section.dart';
 import 'package:lance_box/presentation/widgets/default_button.dart';
 import 'package:lance_box/presentation/widgets/default_button_2.dart';
 import 'package:lance_box/presentation/widgets/lance_box_input_field.dart';

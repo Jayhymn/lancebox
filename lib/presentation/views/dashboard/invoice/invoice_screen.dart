@@ -45,7 +45,7 @@ class InvoiceScreen extends ConsumerWidget {
                     isSelected: invoiceProviderState.selection == 0,
                     onPressed:(){
                       invoiceProviderNotifier.selectCreateInvoice;
-                      Navigator.pushNamed(context, '/bankDetails');
+                      Navigator.pushNamed(context, '/invoiceDetails');
                     },
                     useInkwell: false,
                   ),
