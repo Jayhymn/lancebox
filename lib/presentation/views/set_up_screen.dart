@@ -9,13 +9,15 @@ import 'package:lance_box/states/set_up_state.dart';
 
 import '../../utils/image_utils.dart';
 import '../widgets/dashed_rect_painter.dart';
+import '../widgets/selection_button.dart';
+import 'auth/account_selection_section.dart';
+import 'auth/image_upload_section.dart';
 
 class SetUpProfile extends ConsumerWidget {
   const SetUpProfile({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Listen to the selected option from Riverpod
     final setUpProfileState = ref.watch(setupProvider);
     final setUpProfileNotifier = ref.watch(setupProvider.notifier);
 
@@ -37,36 +39,7 @@ class SetUpProfile extends ConsumerWidget {
                 textAlign: TextAlign.center,
                 style: context.textTheme.titleMedium,
               ),
-              SizedBox(
-                width: context.dynamicScreenWidth(400),
-                child: RichText(
-                  textAlign: TextAlign.start,
-                  text: TextSpan(
-                    text: 'Set up Profile',
-                    style: context.textTheme.bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.w600),
-                    children: [
-                      WidgetSpan(
-                        child: SvgPicture.asset(
-                          ImagesPaths.forwardArrow,
-                        ),
-                      ),
-                      TextSpan(
-                          text: ' Personal Details ',
-                          style: context.textTheme.bodyMedium
-                              ?.copyWith(color: AppColors.disabled)),
-                      WidgetSpan(
-                        child: Opacity(
-                          opacity: 0.3,
-                          child: SvgPicture.asset(
-                            ImagesPaths.forwardArrow,
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
+              const _ProfileStepIndicator(),
               SizedBox(
                 width: context.dynamicScreenWidth(400),
                 child: Text(
@@ -74,7 +47,7 @@ class SetUpProfile extends ConsumerWidget {
                   style: context.textTheme.bodyMedium,
                 ),
               ),
-              _ImageUploadSection(
+              ImageUploadSection(
                 setUpProfileState: setUpProfileState,
                 setUpProfileNotifier: setUpProfileNotifier,
               ),
@@ -97,7 +70,7 @@ class SetUpProfile extends ConsumerWidget {
                       ?.copyWith(fontWeight: FontWeight.w500),
                 ),
               ),
-              _AccountSelectionSection(
+              AccountSelectionSection(
                 setUpProfileState: setUpProfileState,
                 setUpProfileNotifier: setUpProfileNotifier,
               ),
@@ -137,147 +110,40 @@ class SetUpProfile extends ConsumerWidget {
   }
 }
 
-class _AccountSelectionSection extends StatelessWidget {
-  const _AccountSelectionSection({
+class _ProfileStepIndicator extends StatelessWidget {
+  const _ProfileStepIndicator({
     super.key,
-    required this.setUpProfileState,
-    required this.setUpProfileNotifier,
   });
-
-  final SetUpStateModel setUpProfileState;
-  final SetUpState setUpProfileNotifier;
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        // Business Owner Button
-        SizedBox(
-          width: double.infinity,
-          height: context.dynamicScreenHeight(80),
-          child: TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              backgroundColor: setUpProfileState.selection == 0
-                  ? AppColors.secondary
-                  : AppColors.white,
-              side: setUpProfileState.selection == 0
-                  ? null
-                  : const BorderSide(width: 2, color: AppColors.borderColor),
-            ),
-            onPressed: () {
-              setUpProfileNotifier.selectBusinessOwner();
-            },
-            child: Text(
-              "As a Business Owner",
-              style: context.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w400,
-                color: setUpProfileState.selection == 0
-                    ? AppColors.white
-                    : AppColors.black,
+    return SizedBox(
+      width: context.dynamicScreenWidth(400),
+      child: RichText(
+        textAlign: TextAlign.start,
+        text: TextSpan(
+          text: 'Set up Profile',
+          style: context.textTheme.bodyMedium
+              ?.copyWith(fontWeight: FontWeight.w600),
+          children: [
+            WidgetSpan(
+              child: SvgPicture.asset(
+                ImagesPaths.forwardArrow,
               ),
             ),
-          ),
-        ),
-        SizedBox(height: context.dynamicScreenHeight(15)),
-        // Freelancer Button
-        SizedBox(
-          width: double.infinity,
-          height: context.dynamicScreenHeight(80),
-          child: TextButton(
-            style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-              backgroundColor: setUpProfileState.selection == 1
-                  ? AppColors.secondary
-                  : AppColors.white,
-              side: setUpProfileState.selection == 1
-                  ? null
-                  : const BorderSide(width: 2, color: AppColors.borderColor),
-            ),
-            onPressed: () {
-              setUpProfileNotifier.selectFreelancer();
-            },
-            child: Text(
-              "As an individual/Freelancer",
-              style: context.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w400,
-                color: setUpProfileState.selection == 1
-                    ? AppColors.white
-                    : AppColors.black,
-              ),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class _ImageUploadSection extends StatelessWidget {
-  const _ImageUploadSection({
-    super.key,
-    required this.setUpProfileState,
-    required this.setUpProfileNotifier,
-  });
-
-  final SetUpStateModel setUpProfileState;
-  final SetUpState setUpProfileNotifier;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: GestureDetector(
-        onTap: setUpProfileState.uploadState == UploadingState.uploading
-            ? null // Disable when uploading
-            : () async {
-                bool uploaded = await ImageUtils.getImage(
-                    ImageSource.gallery, setUpProfileNotifier);
-                if (uploaded) {
-                  setUpProfileNotifier.setUploading(UploadingState.uploaded);
-                }
-              },
-        child: Container(
-          width: context.dynamicScreenWidth(400),
-          height: context.dynamicScreenHeight(120),
-          decoration: BoxDecoration(
-            border: Border.all(width: 2, color: Colors.transparent),
-          ),
-          child: CustomPaint(
-            painter: DashRectPainter(
-              color: AppColors.primary,
-              strokeWidth: 2,
-              gap: 10,
-            ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                if (setUpProfileState.uploadState == UploadingState.uploading)
-                  const CircularProgressIndicator()
-                else if (setUpProfileState.uploadState ==
-                    UploadingState.uploaded)
-                  SvgPicture.asset(ImagesPaths.success, height: 40, width: 40)
-                else
-                  SvgPicture.asset(ImagesPaths.gallery, height: 40, width: 40),
-                const SizedBox(height: 10),
-                Text(
-                  setUpProfileState.uploadState == UploadingState.uploading
-                      ? "Uploading image..."
-                      : setUpProfileState.uploadState == UploadingState.uploaded
-                          ? "Upload Successful"
-                          : "Drag or Select a file",
-                  style: context.textTheme.bodyMedium?.copyWith(
-                    color: AppColors.disabled,
-                  ),
+            TextSpan(
+                text: ' Personal Details ',
+                style: context.textTheme.bodyMedium
+                    ?.copyWith(color: AppColors.disabled)),
+            WidgetSpan(
+              child: Opacity(
+                opacity: 0.3,
+                child: SvgPicture.asset(
+                  ImagesPaths.forwardArrow,
                 ),
-              ],
+              ),
             ),
-          ),
+          ],
         ),
       ),
     );
