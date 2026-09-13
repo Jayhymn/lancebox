@@ -23,11 +23,11 @@ Key features and functionalities of LanceBox:
 - **Customer Dashboard:** Provides a comprehensive view for managing different app features.
 
 ### Screenshots
+![Business Selection](screenshots/SideDrawer.png)
 ![Business Selection](screenshots/BusinessSelection.png)
 ![Dashboard Home](screenshots/DashboardHome.png)
 ![Image Uplaoding](screenshots/ImageUploading.png)
 ![ProfileSetup](screenshots/ProfileSetup.png)
-![Search Screen](screenshots/SearchScreen.png)
 ![SignUp](screenshots/Signup.png)
 ![Upload Success](screenshots/UploadSuccess.png)
 
