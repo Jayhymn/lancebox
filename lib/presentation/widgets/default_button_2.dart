@@ -6,6 +6,7 @@ class DefaultButton2 extends StatelessWidget {
   final VoidCallback onPressed;
   final String text;
   final Color buttonColor;
+  final Color labelColor;
 
   const DefaultButton2({
     super.key,
@@ -13,6 +14,7 @@ class DefaultButton2 extends StatelessWidget {
     required this.isLoading,
     required this.onPressed,
     required this.buttonColor,
+    required this.labelColor,
   });
 
   @override
@@ -46,6 +48,7 @@ class DefaultButton2 extends StatelessWidget {
               text,
               style: context.textTheme.titleSmall?.copyWith(
                 fontWeight: FontWeight.w600,
+                color: labelColor
               ),
             ),
           ],
@@ -54,6 +57,7 @@ class DefaultButton2 extends StatelessWidget {
           text,
           style: context.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.w600,
+              color: labelColor
           ),
         ),
       ),

@@ -115,6 +115,7 @@ class SetUpProfile extends ConsumerWidget {
                                 context, '/dashboard');
                           },
                     text: "Proceed",
+                    labelColor: AppColors.white,
                     buttonColor: setUpProfileState.selection == -1
                         ? AppColors
                             .disabled // Grey out the button when no selection

@@ -26,6 +26,7 @@ class SignUpScreen extends ConsumerWidget {
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
+              spacing: 20,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset(
@@ -33,7 +34,7 @@ class SignUpScreen extends ConsumerWidget {
                   height: 40,
                   width: 40,
                 ),
-                SizedBox(height: context.sizeHeight(0.05)),
+                SizedBox(height: context.dynamicScreenHeight(10)),
                 Text(
                   "Looks like you're new here!",
                   textAlign: TextAlign.center,
@@ -44,7 +45,6 @@ class SignUpScreen extends ConsumerWidget {
                   textAlign: TextAlign.center,
                   style: context.textTheme.titleSmall,
                 ),
-                SizedBox(height: context.sizeHeight(0.05)),
                 Form(
                   key: formState.formKey,
                   child: AutofillGroup(
@@ -85,9 +85,9 @@ class SignUpScreen extends ConsumerWidget {
                           toggleVisibility: formNotifier.togglePasswordVisibility,
                           labelText: 'Confirm Password',
                         ),
-                        SizedBox(height: context.dynamicScreenHeight(15)),
                         FormError(errors: formState.errors),
-                        SizedBox(height: context.dynamicScreenHeight(15)),
+
+                        SizedBox(height: context.dynamicScreenHeight(25)),
                         DefaultButton(
                           isLoading: formState.isLoading,
                           onPressed: () async {
@@ -102,12 +102,11 @@ class SignUpScreen extends ConsumerWidget {
                     ),
                   ),
                 ),
-                SizedBox(height: context.sizeHeight(0.01)),
                 Text(
                   "Or",
                   style: context.textTheme.titleMedium,
                 ),
-                SizedBox(height: context.sizeHeight(0.01)),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -121,7 +120,6 @@ class SignUpScreen extends ConsumerWidget {
                     ),
                   ],
                 ),
-                SizedBox(height: context.dynamicScreenHeight(20)),
                 SizedBox(
                   width: context.dynamicScreenWidth(320),
                   child: RichText(

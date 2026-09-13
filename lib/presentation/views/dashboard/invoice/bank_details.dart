@@ -97,6 +97,7 @@ class BankDetailsScreen extends ConsumerWidget {
                           //   Navigator.pushNamed(context, '/setup');
                           // }
                         },
+                        labelColor: AppColors.white,
                         text: "Preview Invoice",
                         buttonColor: AppColors.disabled,
                       )
