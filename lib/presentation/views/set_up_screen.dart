@@ -21,88 +21,97 @@ class SetUpProfile extends ConsumerWidget {
     final setUpProfileState = ref.watch(setupProvider);
     final setUpProfileNotifier = ref.watch(setupProvider.notifier);
 
-    return SafeArea(
-      child: Center(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-          child: Column(
-            spacing: 20,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SvgPicture.asset(
-                ImagesPaths.appIcon,
-                height: 40,
-                width: 40,
-              ),
-              Text(
-                "Let's get to know you better",
-                textAlign: TextAlign.center,
-                style: context.textTheme.titleMedium,
-              ),
-              const _ProfileStepIndicator(),
-              SizedBox(
-                width: context.dynamicScreenWidth(400),
-                child: Text(
-                  "Upload your logo/personal branding",
-                  style: context.textTheme.bodyMedium,
+    return Scaffold(
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Column(
+              spacing: 20,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(
+                  ImagesPaths.appIcon,
+                  height: 40,
+                  width: 40,
                 ),
-              ),
-              ImageUploadSection(
-                setUpProfileState: setUpProfileState,
-                setUpProfileNotifier: setUpProfileNotifier,
-              ),
-              Center(
-                child: Text(
-                  "Upload a logo",
-                  style: context.textTheme.bodyMedium,
+                Text(
+                  "Let's get to know you better",
+                  textAlign: TextAlign.center,
+                  style: context.textTheme.titleMedium,
                 ),
-              ),
-              Center(
-                child: Text("PNG or JPG less than 20mb",
-                    style: context.textTheme.bodyMedium
-                        ?.copyWith(color: AppColors.disabled)),
-              ),
-              SizedBox(
-                width: context.dynamicScreenWidth(400),
-                child: Text(
-                  "How will you like to use LanceBox?",
-                  style: context.textTheme.bodyMedium
-                      ?.copyWith(fontWeight: FontWeight.w500),
-                ),
-              ),
-              AccountSelectionSection(
-                setUpProfileState: setUpProfileState,
-                setUpProfileNotifier: setUpProfileNotifier,
-              ),
-              SizedBox(
-                width: context.dynamicScreenWidth(400),
-                child: DefaultButton2(
-                  isLoading: setUpProfileState.isLoading,
-                  onPressed: setUpProfileState.selection == -1
-                      ? () {} // Disable button, using an empty function
-                      : () {
-                          setUpProfileNotifier.setLoading(true);
-                        },
-                  text: "Proceed",
-                  buttonColor: setUpProfileState.selection == -1
-                      ? AppColors
-                          .disabled // Grey out the button when no selection
-                      : AppColors.primary, // Active button color
-                ),
-              ),
-              InkWell(
-                child: Text(
-                  "Skip for now",
-                  style: context.textTheme.titleMedium?.copyWith(
-                    decoration: TextDecoration.underline,
-                    decorationColor: AppColors.primary,
-                    fontSize: 16,
-                    fontWeight: FontWeight.w600,
-                    color: AppColors.primary,
+                const _ProfileStepIndicator(),
+                SizedBox(
+                  width: context.dynamicScreenWidth(400),
+                  child: Text(
+                    "Upload your logo/personal branding",
+                    style: context.textTheme.bodyMedium,
                   ),
                 ),
-              )
-            ],
+                ImageUploadSection(
+                  setUpProfileState: setUpProfileState,
+                  setUpProfileNotifier: setUpProfileNotifier,
+                ),
+                Center(
+                  child: Text(
+                    "Upload a logo",
+                    style: context.textTheme.bodyMedium,
+                  ),
+                ),
+                Center(
+                  child: Text("PNG or JPG less than 20mb",
+                      style: context.textTheme.bodyMedium
+                          ?.copyWith(color: AppColors.disabled)),
+                ),
+                SizedBox(
+                  width: context.dynamicScreenWidth(400),
+                  child: Text(
+                    "How will you like to use LanceBox?",
+                    style: context.textTheme.bodyMedium
+                        ?.copyWith(fontWeight: FontWeight.w500),
+                  ),
+                ),
+                AccountSelectionSection(
+                  setUpProfileState: setUpProfileState,
+                  setUpProfileNotifier: setUpProfileNotifier,
+                ),
+                SizedBox(
+                  width: context.dynamicScreenWidth(400),
+                  child: DefaultButton2(
+                    isLoading: setUpProfileState.isLoading,
+                    onPressed: setUpProfileState.selection == -1
+                        ? () {} // Disable button, using an empty function
+                        : () {
+                            setUpProfileNotifier.setLoading(true);
+                            Future.delayed(const Duration(seconds: 5));
+                            Navigator.pushReplacementNamed(context, '/dashboard');
+                          },
+                    text: "Proceed",
+                    buttonColor: setUpProfileState.selection == -1
+                        ? AppColors
+                            .disabled // Grey out the button when no selection
+                        : AppColors.primary, // Active button color
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.pushReplacementNamed(context, '/dashboard');
+                  },
+                  child: InkWell(
+                    child: Text(
+                      "Skip for now",
+                      style: context.textTheme.titleMedium?.copyWith(
+                        decoration: TextDecoration.underline,
+                        decorationColor: AppColors.primary,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: AppColors.primary,
+                      ),
+                    ),
+                  ),
+                )
+              ],
+            ),
           ),
         ),
       ),

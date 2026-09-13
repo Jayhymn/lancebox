@@ -3,6 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lance_box/presentation/views/auth/signup_screen.dart';
 import 'package:lance_box/presentation/views/dashboard/dashboard.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice_screen.dart';
+import 'package:lance_box/presentation/views/dashboard/profile_screen.dart';
+import 'package:lance_box/presentation/views/dashboard/receipt_screen.dart';
+import 'package:lance_box/presentation/views/dashboard/settings_screen.dart';
 import 'package:lance_box/presentation/views/set_up_screen.dart';
 import 'package:lance_box/shared/shared.dart';
 
@@ -18,10 +21,16 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'LanceBox',
       theme: AppThemeData.lightTheme,
-      home: const Scaffold(
-        appBar: null,
-        body: Dashboard(),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SignUpScreen(),
+        '/setup': (context) => const SetUpProfile(),
+        '/invoice': (context) => const InvoiceScreen(),
+        '/dashboard': (context) => const Dashboard(),
+        '/receipt': (context) => const ReceiptScreen(),
+        '/settings': (context) => const SettingsScreen(),
+        '/profile': (context) => const ProfileScreen(),
+      },
     );
   }
 }
