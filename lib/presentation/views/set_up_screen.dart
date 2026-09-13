@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:lance_box/app.dart';
 import 'package:lance_box/presentation/widgets/default_button.dart';
 import 'package:lance_box/presentation/widgets/default_button_2.dart';
+import 'package:lance_box/presentation/widgets/step_indicator.dart';
 import 'package:lance_box/states/set_up_state.dart';
 
 import '../../utils/image_utils.dart';
@@ -40,7 +41,33 @@ class SetUpProfile extends ConsumerWidget {
                   textAlign: TextAlign.center,
                   style: context.textTheme.titleMedium,
                 ),
-                const _ProfileStepIndicator(),
+                Row(
+                  spacing: 10,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const StepIndicator(
+                      text: "Set up Profile",
+                      isGreyed: true,
+                    ),
+                    Opacity(
+                      opacity: 0.3,
+                      child: SvgPicture.asset(
+                        ImagesPaths.forwardArrow,
+                      ),
+                    ),
+                    const StepIndicator(
+                      text: "Personal Details",
+                      isGreyed: false,
+                    ),
+                    Opacity(
+                      opacity: 1,
+                      child: SvgPicture.asset(
+                        ImagesPaths.forwardArrow,
+                      ),
+                    ),
+                    const Expanded(child: SizedBox())
+                  ],
+                ),
                 SizedBox(
                   width: context.dynamicScreenWidth(400),
                   child: Text(
@@ -84,7 +111,8 @@ class SetUpProfile extends ConsumerWidget {
                         : () {
                             setUpProfileNotifier.setLoading(true);
                             Future.delayed(const Duration(seconds: 5));
-                            Navigator.pushReplacementNamed(context, '/dashboard');
+                            Navigator.pushReplacementNamed(
+                                context, '/dashboard');
                           },
                     text: "Proceed",
                     buttonColor: setUpProfileState.selection == -1
@@ -113,46 +141,6 @@ class SetUpProfile extends ConsumerWidget {
               ],
             ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class _ProfileStepIndicator extends StatelessWidget {
-  const _ProfileStepIndicator({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: context.dynamicScreenWidth(400),
-      child: RichText(
-        textAlign: TextAlign.start,
-        text: TextSpan(
-          text: 'Set up Profile',
-          style: context.textTheme.bodyMedium
-              ?.copyWith(fontWeight: FontWeight.w600),
-          children: [
-            WidgetSpan(
-              child: SvgPicture.asset(
-                ImagesPaths.forwardArrow,
-              ),
-            ),
-            TextSpan(
-                text: ' Personal Details ',
-                style: context.textTheme.bodyMedium
-                    ?.copyWith(color: AppColors.disabled)),
-            WidgetSpan(
-              child: Opacity(
-                opacity: 0.3,
-                child: SvgPicture.asset(
-                  ImagesPaths.forwardArrow,
-                ),
-              ),
-            ),
-          ],
         ),
       ),
     );

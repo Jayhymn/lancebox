@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lance_box/presentation/views/dashboard/profile_screen.dart';
 import 'package:lance_box/presentation/views/dashboard/receipt_screen.dart';
 import 'package:lance_box/presentation/widgets/lancebox_drawer.dart';
-import 'invoice_screen.dart';
+import 'invoice/invoice_screen.dart';
 import 'settings_screen.dart';
 
 class Dashboard extends ConsumerWidget {

@@ -1,18 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:lance_box/app.dart';
 
-class EmailFormField extends StatelessWidget {
+class LanceIBoxInputField extends StatelessWidget {
   final Function(String?) onSaved;
   final Function(String) onChanged;
   final String? Function(String?)? validator;
   final String labelText; // Add labelText to pass custom text
+  final TextInputType inputType;
+  final String hintText;
+  final List<String> autoFills;
+  final bool textCaps;
 
-  const EmailFormField({
+  const LanceIBoxInputField({
     super.key,
     required this.onSaved,
     required this.onChanged,
     required this.validator,
     required this.labelText, // Initialize labelText
+    required this.inputType,
+    required this.hintText,
+    required this.autoFills,
+    this.textCaps = false
   });
 
   @override
@@ -27,14 +35,15 @@ class EmailFormField extends StatelessWidget {
         const SizedBox(height: 8),
         TextFormField(
           textInputAction: TextInputAction.next,
-          keyboardType: TextInputType.emailAddress,
+          keyboardType: inputType,
           onSaved: onSaved,
-          autofillHints: const [AutofillHints.email],
+          autofillHints: autoFills,
           onChanged: onChanged,
           validator: validator,
-          decoration: const InputDecoration(
+          textCapitalization: textCaps ? TextCapitalization.words : TextCapitalization.none,
+          decoration: InputDecoration(
             border: InputBorder.none,
-            enabledBorder: OutlineInputBorder(
+            enabledBorder: const OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
                 ),
@@ -42,7 +51,7 @@ class EmailFormField extends StatelessWidget {
                   color: Colors.grey,
                   width: 0.5,
                 )),
-            focusedBorder: OutlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(15),
               ),
@@ -51,11 +60,11 @@ class EmailFormField extends StatelessWidget {
                 width: 0.5,
               ),
             ),
-            hintText: "lancebox@example.com",
+            hintText: hintText,
             floatingLabelBehavior: FloatingLabelBehavior.never,
             contentPadding:
-            EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
-            hintStyle: TextStyle(
+                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+            hintStyle: const TextStyle(
               color: AppColors.disabled,
               fontSize: 15.0,
             ),

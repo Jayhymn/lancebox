@@ -4,7 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lance_box/app.dart';
 import 'package:lance_box/states/invoice_state.dart';
 
-import '../../widgets/invoice_button.dart';
+import '../../../widgets/invoice_button.dart';
 
 class InvoiceScreen extends ConsumerWidget {
   const InvoiceScreen({super.key});
@@ -43,7 +43,10 @@ class InvoiceScreen extends ConsumerWidget {
                     titleLabel: "Create New Invoice",
                     bodyLabel: "create a quick Invoice to send",
                     isSelected: invoiceProviderState.selection == 0,
-                    onPressed: invoiceProviderNotifier.selectCreateInvoice,
+                    onPressed:(){
+                      invoiceProviderNotifier.selectCreateInvoice;
+                      Navigator.pushNamed(context, '/bankDetails');
+                    },
                     useInkwell: false,
                   ),
                   InvoiceButton(
