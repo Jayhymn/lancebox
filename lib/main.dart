@@ -4,6 +4,7 @@ import 'package:lance_box/presentation/views/auth/signup_screen.dart';
 import 'package:lance_box/presentation/views/dashboard/dashboard.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice/bank_details.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice/invoice_screen.dart';
+import 'package:lance_box/presentation/views/dashboard/invoice/preview_invoice.dart';
 import 'package:lance_box/presentation/views/dashboard/profile_screen.dart';
 import 'package:lance_box/presentation/views/dashboard/receipt_screen.dart';
 import 'package:lance_box/presentation/views/dashboard/settings_screen.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/setup': (context) => const SetUpProfile(),
         '/invoice': (context) => const InvoiceScreen(),
         '/bankDetails': (context) => const BankDetailsScreen(),
+        '/previewInvoice': (context) => const PreviewInvoiceScreen(),
         '/dashboard': (context) => const Dashboard(),
         '/receipt': (context) => const ReceiptScreen(),
         '/settings': (context) => const SettingsScreen(),

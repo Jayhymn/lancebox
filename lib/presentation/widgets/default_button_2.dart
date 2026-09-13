@@ -7,6 +7,7 @@ class DefaultButton2 extends StatelessWidget {
   final String text;
   final Color buttonColor;
   final Color labelColor;
+  final bool outlineBorder;
 
   const DefaultButton2({
     super.key,
@@ -15,6 +16,7 @@ class DefaultButton2 extends StatelessWidget {
     required this.onPressed,
     required this.buttonColor,
     required this.labelColor,
+    this.outlineBorder = false,
   });
 
   @override
@@ -27,39 +29,43 @@ class DefaultButton2 extends StatelessWidget {
           foregroundColor: Colors.white,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
+            side: BorderSide(
+              color:
+                  outlineBorder ? AppColors.primary : const Color(0xFF000000),
+              width: outlineBorder ? 2 : 0
+            ),
           ),
           backgroundColor: buttonColor,
         ),
         onPressed: isLoading ? null : onPressed, // Disable button if loading
         child: isLoading
             ? Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const SizedBox(
-              height: 25,
-              width: 25,
-              child: CircularProgressIndicator(
-                color: AppColors.black,
-                strokeWidth: 2.5,
-              ),
-            ),
-            const SizedBox(width: 10), // Spacing between the progress bar and text
-            Text(
-              text,
-              style: context.textTheme.titleSmall?.copyWith(
-                fontWeight: FontWeight.w600,
-                color: labelColor
-              ),
-            ),
-          ],
-        )
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const SizedBox(
+                    height: 25,
+                    width: 25,
+                    child: CircularProgressIndicator(
+                      color: AppColors.black,
+                      strokeWidth: 2.5,
+                    ),
+                  ),
+                  const SizedBox(
+                      width: 10), // Spacing between the progress bar and text
+                  Text(
+                    text,
+                    style: context.textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w600,
+                      color: labelColor,
+                    ),
+                  ),
+                ],
+              )
             : Text(
-          text,
-          style: context.textTheme.titleSmall?.copyWith(
-            fontWeight: FontWeight.w600,
-              color: labelColor
-          ),
-        ),
+                text,
+                style: context.textTheme.titleSmall
+                    ?.copyWith(fontWeight: FontWeight.w600, color: labelColor),
+              ),
       ),
     );
   }

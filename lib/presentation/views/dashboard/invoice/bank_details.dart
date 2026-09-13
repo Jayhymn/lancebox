@@ -91,10 +91,10 @@ class BankDetailsScreen extends ConsumerWidget {
                       SizedBox(height: context.dynamicScreenHeight(30),),
                       DefaultButton2(
                         isLoading: false,
-                        onPressed: () async {
+                        onPressed: () {
                           // if (!formState.isLoading &&
                           //     formNotifier.submitForm()) {
-                          //   Navigator.pushNamed(context, '/setup');
+                            Navigator.pushNamed(context, '/previewInvoice');
                           // }
                         },
                         labelColor: AppColors.white,
