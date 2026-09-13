@@ -17,13 +17,21 @@ class AccountSelectionSection extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      spacing: 15,
       children: [
+        SizedBox(
+          width: context.dynamicScreenWidth(400),
+          child: Text(
+            "How will you like to use LanceBox?",
+            style: context.textTheme.bodyMedium
+                ?.copyWith(fontWeight: FontWeight.w500),
+          ),
+        ),
         SelectionButton(
           text: "As a Business Owner",
           isSelected: setUpProfileState.selection == 0,
           onPressed: () => setUpProfileNotifier.selectBusinessOwner(),
         ),
-        SizedBox(height: context.dynamicScreenHeight(15)),
         SelectionButton(
           text: "As an Individual/Freelancer",
           isSelected: setUpProfileState.selection == 1,

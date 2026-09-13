@@ -46,7 +46,7 @@ class DefaultButton2 extends StatelessWidget {
                     height: 25,
                     width: 25,
                     child: CircularProgressIndicator(
-                      color: AppColors.black,
+                      color: AppColors.white,
                       strokeWidth: 2.5,
                     ),
                   ),

@@ -3,6 +3,7 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lance_box/app.dart';
+import 'package:lance_box/presentation/views/dashboard/invoice/progress_section.dart';
 import 'package:lance_box/presentation/widgets/default_button.dart';
 import 'package:lance_box/presentation/widgets/default_button_2.dart';
 import 'package:lance_box/presentation/widgets/lance_box_input_field.dart';
@@ -48,25 +49,34 @@ class PreviewInvoiceScreen extends ConsumerWidget {
                         style: context.textTheme.titleMedium?.copyWith(
                           shadows: [
                             const Shadow(
-                              color: AppColors.primary,
-                              offset: Offset(0, -5)
-                            )
+                                color: AppColors.primary, offset: Offset(0, -5))
                           ],
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
                           color: Colors.transparent,
-                          decoration:
-                          TextDecoration.underline,
+                          decoration: TextDecoration.underline,
                           decorationColor: AppColors.primary,
                           decorationThickness: 1.5,
-                          decorationStyle:
-                          TextDecorationStyle.solid,
+                          decorationStyle: TextDecorationStyle.solid,
                         ),
                       ),
                     )
                   ],
                 ),
-                const InvoiceProgressSection(),
+                const ProgressRow(
+                  progressItems: [
+                    {'label': 'Invoice Details'},
+                    {'label': 'Bank Details'},
+                    {'label': 'Preview Invoice'},
+                    {
+                      'label':
+                          'Preview Invoice Download Invoice/Send to Client',
+                      'isGreyed': false,
+                      'flex': 2
+                    },
+                  ],
+                  isFinalStep: true,
+                ),
                 Expanded(
                   child: true
                       ? Shimmer.fromColors(
@@ -119,72 +129,6 @@ class PreviewInvoiceScreen extends ConsumerWidget {
           ),
         ),
       ),
-    );
-  }
-}
-
-class InvoiceProgressSection extends StatelessWidget {
-  const InvoiceProgressSection({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      spacing: 5,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        const Expanded(
-          child: StepIndicator(
-            text: "Invoice Details",
-            isGreyed: true,
-          ),
-        ),
-        Opacity(
-          opacity: 0.3,
-          child: SvgPicture.asset(
-            ImagesPaths.forwardArrow,
-          ),
-        ),
-        const Expanded(
-          child: StepIndicator(
-            text: "Bank Details",
-            isGreyed: true,
-          ),
-        ),
-        Opacity(
-          opacity: 1,
-          child: SvgPicture.asset(
-            ImagesPaths.forwardArrow,
-          ),
-        ),
-        const Expanded(
-          child: StepIndicator(
-            text: "Preview Invoice",
-            isGreyed: false,
-          ),
-        ),
-        Opacity(
-          opacity: 1,
-          child: SvgPicture.asset(
-            ImagesPaths.forwardArrow,
-          ),
-        ),
-        const Expanded(
-          flex: 2,
-          child: StepIndicator(
-            text: "Preview Invoice Download Invoice/Send to Client",
-            isGreyed: true,
-          ),
-        ),
-        Opacity(
-          opacity: 1,
-          child: SvgPicture.asset(
-            ImagesPaths.forwardArrow,
-          ),
-        ),
-        SvgPicture.asset(ImagesPaths.success)
-      ],
     );
   }
 }

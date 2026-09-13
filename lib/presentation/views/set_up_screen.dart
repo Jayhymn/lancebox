@@ -13,6 +13,7 @@ import '../widgets/dashed_rect_painter.dart';
 import '../widgets/selection_button.dart';
 import 'auth/account_selection_section.dart';
 import 'auth/image_upload_section.dart';
+import 'dashboard/invoice/progress_section.dart';
 
 class SetUpProfile extends ConsumerWidget {
   const SetUpProfile({super.key});
@@ -41,32 +42,18 @@ class SetUpProfile extends ConsumerWidget {
                   textAlign: TextAlign.center,
                   style: context.textTheme.titleMedium,
                 ),
-                Row(
-                  spacing: 10,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const StepIndicator(
-                      text: "Set up Profile",
-                      isGreyed: true,
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: SizedBox(
+                    width: context.dynamicScreenWidth(215),
+                    child: const ProgressRow(
+                      progressItems: [
+                        {'label': 'Set up Profile'},
+                        {'label': 'Personal Details', 'isGreyed': false},
+                      ],
+                      isFinalStep: false,
                     ),
-                    Opacity(
-                      opacity: 0.3,
-                      child: SvgPicture.asset(
-                        ImagesPaths.forwardArrow,
-                      ),
-                    ),
-                    const StepIndicator(
-                      text: "Personal Details",
-                      isGreyed: false,
-                    ),
-                    Opacity(
-                      opacity: 1,
-                      child: SvgPicture.asset(
-                        ImagesPaths.forwardArrow,
-                      ),
-                    ),
-                    const Expanded(child: SizedBox())
-                  ],
+                  ),
                 ),
                 SizedBox(
                   width: context.dynamicScreenWidth(400),
@@ -90,14 +77,6 @@ class SetUpProfile extends ConsumerWidget {
                       style: context.textTheme.bodyMedium
                           ?.copyWith(color: AppColors.disabled)),
                 ),
-                SizedBox(
-                  width: context.dynamicScreenWidth(400),
-                  child: Text(
-                    "How will you like to use LanceBox?",
-                    style: context.textTheme.bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.w500),
-                  ),
-                ),
                 AccountSelectionSection(
                   setUpProfileState: setUpProfileState,
                   setUpProfileNotifier: setUpProfileNotifier,
@@ -111,8 +90,7 @@ class SetUpProfile extends ConsumerWidget {
                         : () {
                             setUpProfileNotifier.setLoading(true);
                             Future.delayed(const Duration(seconds: 5));
-                            Navigator.pushNamed(
-                                context, '/dashboard');
+                            Navigator.pushNamed(context, '/dashboard');
                           },
                     text: "Proceed",
                     labelColor: AppColors.white,

@@ -38,7 +38,7 @@ class DefaultButton extends StatelessWidget {
               height: 25,
               width: 25,
               child: CircularProgressIndicator(
-                color: AppColors.black,
+                color: AppColors.white,
                 strokeWidth: 2.5,
               ),
             ),
@@ -55,6 +55,7 @@ class DefaultButton extends StatelessWidget {
           text,
           style: context.textTheme.titleSmall?.copyWith(
             fontWeight: FontWeight.w600,
+              color: AppColors.white
           ),
         ),
       ),
