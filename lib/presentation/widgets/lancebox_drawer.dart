@@ -14,6 +14,9 @@ class LanceBoxDrawer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: AppColors.secondary,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       child: Column(
         children: [
           DrawerHeader(
@@ -21,20 +24,23 @@ class LanceBoxDrawer extends StatelessWidget {
               color: AppColors
                   .secondary, // Add background color to make it visible
             ),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                GestureDetector(
-                  onTap: () => Navigator.pop(context),
-                  child: SvgPicture.asset(
-                    ImagesPaths.close,
-                    color: AppColors.white,
+            child: Align(
+              alignment: Alignment.centerLeft,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: SvgPicture.asset(
+                      ImagesPaths.close,
+                      color: AppColors.white,
+                    ),
                   ),
-                ),
-                const SizedBox(height: 25), // Space between the icons
-                SvgPicture.asset(ImagesPaths.home),
-              ],
+                  const SizedBox(height: 25), // Space between the icons
+                  SvgPicture.asset(ImagesPaths.home, width: 150,),
+                ],
+              ),
             ),
           ),
           // List items
@@ -63,7 +69,7 @@ class LanceBoxDrawer extends StatelessWidget {
           DrawerItem(
             title: "Log Out",
             leading: ImagesPaths.logout,
-            onTap: () => onItemTapped(4), // Ensure the correct index
+            onTap: () {}, // Ensure the correct index
           ),
         ],
       ),
