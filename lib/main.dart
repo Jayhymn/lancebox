@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:lance_box/presentation/views/auth/signup.dart';
-import 'package:lance_box/presentation/views/set_up_profile.dart';
+import 'package:lance_box/presentation/views/auth/signup_screen.dart';
+import 'package:lance_box/presentation/views/set_up_screen.dart';
 import 'package:lance_box/shared/shared.dart';
 
 void main() {

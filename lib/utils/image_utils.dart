@@ -1,10 +1,10 @@
 import 'package:image_picker/image_picker.dart';
-import 'package:lance_box/states/set_up_profile_state.dart';
+import 'package:lance_box/states/set_up_state.dart';
 
 class ImageUtils {
   static Future<bool> getImage(
       ImageSource imageSource,
-      SetUpProfileState setUpProfileNotifier,
+      SetUpState setUpProfileNotifier,
       ) async {
     // Pick an image
     XFile? pickedFile = await ImagePicker().pickImage(source: imageSource);

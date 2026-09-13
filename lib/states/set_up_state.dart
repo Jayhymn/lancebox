@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SetUpProfileState extends StateNotifier<SetUpProfileStateModel> {
-  SetUpProfileState() : super(SetUpProfileStateModel());
+class SetUpState extends StateNotifier<SetUpStateModel> {
+  SetUpState() : super(SetUpStateModel());
 
   void selectBusinessOwner() {
     state = state.copyWith(selection: 0, isLoading: false);  // Set selection to 0 (Business Owner)
@@ -26,23 +26,23 @@ enum UploadingState {
   uploaded
 }
 
-class SetUpProfileStateModel {
+class SetUpStateModel {
   final bool isLoading;
   final UploadingState uploadState;
   final int selection;
 
-  SetUpProfileStateModel({
+  SetUpStateModel({
     this.isLoading = false,
     this.uploadState = UploadingState.notUploading,
     this.selection = -1,  // Default to no selection
   });
 
-  SetUpProfileStateModel copyWith({
+  SetUpStateModel copyWith({
     bool? isLoading,
     UploadingState? isUploading,
     int? selection,
   }) {
-    return SetUpProfileStateModel(
+    return SetUpStateModel(
       isLoading: isLoading ?? this.isLoading,
       uploadState: isUploading ?? this.uploadState,
       selection: selection ?? this.selection,
@@ -51,6 +51,6 @@ class SetUpProfileStateModel {
 }
 
 // Define a provider to access the SetUpProfileStateNotifier
-final setupProfileProvider = StateNotifierProvider<SetUpProfileState, SetUpProfileStateModel>(
-      (ref) => SetUpProfileState(),
+final setupProvider = StateNotifierProvider<SetUpState, SetUpStateModel>(
+      (ref) => SetUpState(),
 );
