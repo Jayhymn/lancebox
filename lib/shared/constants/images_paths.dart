@@ -15,4 +15,6 @@ class ImagesPaths {
   static const String trashIcon = 'assets/icons/trash-icon.svg';
   static const String gallery = 'assets/icons/gallery.svg';
   static const String plus = 'assets/icons/plus.svg';
+  static const String dashboard = 'assets/icons/dashboard.svg';
+  static const String profile = 'assets/icons/profile.svg';
 }

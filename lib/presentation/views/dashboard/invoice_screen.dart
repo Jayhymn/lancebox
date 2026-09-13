@@ -22,7 +22,6 @@ class InvoiceScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 10,
           children: [
-            // Welcome Message
             Text(
               "Welcome Subomi",
               textAlign: TextAlign.start,
