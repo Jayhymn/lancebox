@@ -43,14 +43,20 @@ class PreviewInvoiceScreen extends ConsumerWidget {
                 Expanded(
                   child: true
                       ? Shimmer.fromColors(
-                          baseColor: AppColors.primary,
-                          highlightColor: AppColors.secondary,
-                          child: const PDFView(
-                            filePath: "pdfUrl",
+                          baseColor: AppColors.offWhite,
+                          highlightColor: AppColors.white,
+                          child: const Card(
+                            elevation: 3,
+                            child: PDFView(
+                              filePath: "pdfUrl",
+                            ),
                           ),
                         )
-                      : PDFView(
-                          filePath: "pdfUrl",
+                      : Card(
+                          elevation: 3,
+                          child: PDFView(
+                            filePath: "pdfUrl",
+                          ),
                         ),
                 ),
                 DefaultButton2(
