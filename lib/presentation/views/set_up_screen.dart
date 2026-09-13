@@ -111,7 +111,7 @@ class SetUpProfile extends ConsumerWidget {
                         : () {
                             setUpProfileNotifier.setLoading(true);
                             Future.delayed(const Duration(seconds: 5));
-                            Navigator.pushReplacementNamed(
+                            Navigator.pushNamed(
                                 context, '/dashboard');
                           },
                     text: "Proceed",
