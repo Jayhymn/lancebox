@@ -130,11 +130,17 @@ class SetUpProfile extends ConsumerWidget {
                     child: Text(
                       "Skip for now",
                       style: context.textTheme.titleMedium?.copyWith(
+                        shadows: [
+                          const Shadow(
+                              color: AppColors.primary, offset: Offset(0, -5))
+                        ],
+                        fontSize: 16,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.transparent,
                         decoration: TextDecoration.underline,
                         decorationColor: AppColors.primary,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                        color: AppColors.primary,
+                        decorationThickness: 1.5,
+                        decorationStyle: TextDecorationStyle.solid,
                       ),
                     ),
                   ),

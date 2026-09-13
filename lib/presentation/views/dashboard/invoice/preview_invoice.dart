@@ -34,10 +34,37 @@ class PreviewInvoiceScreen extends ConsumerWidget {
                     color: Colors.black45,
                   ),
                 ),
-                Text(
-                  "Preview",
-                  textAlign: TextAlign.start,
-                  style: context.textTheme.titleMedium,
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      "Preview",
+                      textAlign: TextAlign.start,
+                      style: context.textTheme.titleMedium,
+                    ),
+                    InkWell(
+                      child: Text(
+                        "Edit Invoice",
+                        style: context.textTheme.titleMedium?.copyWith(
+                          shadows: [
+                            const Shadow(
+                              color: AppColors.primary,
+                              offset: Offset(0, -5)
+                            )
+                          ],
+                          fontSize: 16,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.transparent,
+                          decoration:
+                          TextDecoration.underline,
+                          decorationColor: AppColors.primary,
+                          decorationThickness: 1.5,
+                          decorationStyle:
+                          TextDecorationStyle.solid,
+                        ),
+                      ),
+                    )
+                  ],
                 ),
                 const InvoiceProgressSection(),
                 Expanded(
