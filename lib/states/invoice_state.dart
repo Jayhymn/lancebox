@@ -22,7 +22,7 @@ class InvoiceStateModel {
 
   InvoiceStateModel({
     this.isLoading = false,
-    this.selection = -1,  // Default to no selection
+    this.selection = 0,  // Default to no selection
   });
 
   InvoiceStateModel copyWith({

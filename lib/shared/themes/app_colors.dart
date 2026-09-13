@@ -8,7 +8,7 @@ class AppColors {
     scaffoldWhite,
   ];
 
-  static const Color primaryLight = Color(0xFFE6F0F9);
+  static const Color primaryLight = Color(0xFFF0F0F9);
   static const Color primary = Color(0xFF54ACFF);
   static const Color secondary = Color(0xFF0D3B66);
 
@@ -17,6 +17,7 @@ class AppColors {
   // static const Color black = Color(0xFF232220);
   static const Color black = Color(0xFF333333);
   static const Color white = Color(0xFFFFFFFF);
+  static const Color offWhite = Color(0xFAF8F8F8);
   static const Color error = Color(0xFFF44336);
   static const Color successColor = Color(0xFF4CAF50);
   static const Color disabled = Color(0xFFB2B2B2);
