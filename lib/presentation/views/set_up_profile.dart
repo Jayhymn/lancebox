@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lance_box/app.dart';
 import 'package:lance_box/presentation/widgets/default_button.dart';
 import 'package:lance_box/presentation/widgets/default_button_2.dart';
 import 'package:lance_box/states/set_up_profile_state.dart';
 
+import '../../utils/image_utils.dart';
 import '../widgets/dashed_rect_painter.dart';
 
 class SetUpProfile extends ConsumerWidget {
@@ -43,7 +45,7 @@ class SetUpProfile extends ConsumerWidget {
                   text: TextSpan(
                     text: 'Set up Profile',
                     style: context.textTheme.bodyMedium
-                        ?.copyWith(fontWeight: FontWeight.w400),
+                        ?.copyWith(fontWeight: FontWeight.w600),
                     children: [
                       WidgetSpan(
                         child: SvgPicture.asset(
@@ -55,8 +57,11 @@ class SetUpProfile extends ConsumerWidget {
                           style: context.textTheme.bodyMedium
                               ?.copyWith(color: AppColors.disabled)),
                       WidgetSpan(
-                        child: SvgPicture.asset(
-                          ImagesPaths.forwardArrow,
+                        child: Opacity(
+                          opacity: 0.3,
+                          child: SvgPicture.asset(
+                            ImagesPaths.forwardArrow,
+                          ),
                         ),
                       ),
                     ],
@@ -73,39 +78,57 @@ class SetUpProfile extends ConsumerWidget {
               ),
               SizedBox(height: context.dynamicScreenHeight(20)),
               Center(
-                child: Container(
-                  width: context.dynamicScreenWidth(400),
-                  height: context.dynamicScreenHeight(120),
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                      width: 2,
-                      color: Colors.transparent,
+                child: GestureDetector(
+                  onTap: () {
+                    setUpProfileState.uploadState == UploadingState.uploading
+                        ? () {}
+                        : () async {
+                            var uploaded = await ImageUtils.getImage(
+                                ImageSource.gallery, setUpProfileNotifier);
+                            setUpProfileNotifier.setUploading(uploaded
+                                ? UploadingState.notUploading
+                                : UploadingState.uploaded);
+                          };
+                  },
+                  child: Container(
+                    width: context.dynamicScreenWidth(400),
+                    height: context.dynamicScreenHeight(120),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 2,
+                        color: Colors.transparent,
+                      ),
                     ),
-                  ),
-                  child: CustomPaint(
-                    painter: DashRectPainter(
-                      color: AppColors.primary,
-                      strokeWidth: 2,
-                      gap: 10,
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // SVG image
-                        SvgPicture.asset(
-                          ImagesPaths.gallery, // Path to your SVG image
-                          height: 40,
-                          width: 40,
-                        ),
-                        const SizedBox(height: 10),
-                        // Text
-                        Text(
-                          "Drag or Select a file",
-                          style: context.textTheme.bodyMedium
-                              ?.copyWith(color: AppColors.disabled),
-                        ),
-                      ],
+                    child: CustomPaint(
+                      painter: DashRectPainter(
+                        color: AppColors.primary,
+                        strokeWidth: 2,
+                        gap: 10,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          setUpProfileState.uploadState ==
+                                  UploadingState.uploading
+                              ? const CircularProgressIndicator()
+                              : SvgPicture.asset(
+                                  ImagesPaths.gallery, // Path to your SVG image
+                                  height: 40,
+                                  width: 40,
+                                ),
+                          const SizedBox(height: 10),
+                          // Text
+                          Text(
+                            setUpProfileState.uploadState ==
+                                    UploadingState.uploading
+                                ? "uploading image"
+                                : "Drag or Select a file",
+                            style: context.textTheme.bodyMedium
+                                ?.copyWith(color: AppColors.disabled),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -128,7 +151,8 @@ class SetUpProfile extends ConsumerWidget {
                 width: context.dynamicScreenWidth(400),
                 child: Text(
                   "How will you like to use LanceBox?",
-                  style: context.textTheme.bodyMedium,
+                  style: context.textTheme.bodyMedium
+                      ?.copyWith(fontWeight: FontWeight.w500),
                 ),
               ),
               SizedBox(height: context.dynamicScreenHeight(20)),
@@ -144,12 +168,13 @@ class SetUpProfile extends ConsumerWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        backgroundColor: setUpProfileState == 0
+                        backgroundColor: setUpProfileState.selection == 0
                             ? AppColors.secondary
                             : AppColors.white,
-                        side: setUpProfileState == 0
+                        side: setUpProfileState.selection == 0
                             ? null
-                            : const BorderSide(width: 2, color: AppColors.borderColor),
+                            : const BorderSide(
+                                width: 2, color: AppColors.borderColor),
                       ),
                       onPressed: () {
                         setUpProfileNotifier.selectBusinessOwner();
@@ -157,15 +182,15 @@ class SetUpProfile extends ConsumerWidget {
                       child: Text(
                         "As a Business Owner",
                         style: context.textTheme.titleSmall?.copyWith(
-                          fontWeight: setUpProfileState == 0
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                          color: setUpProfileState == 0 ? AppColors.white : AppColors.black,
+                          fontWeight: FontWeight.w400,
+                          color: setUpProfileState.selection == 0
+                              ? AppColors.white
+                              : AppColors.black,
                         ),
                       ),
                     ),
                   ),
-                  SizedBox(height: context.dynamicScreenHeight(20)),
+                  SizedBox(height: context.dynamicScreenHeight(15)),
                   // Freelancer Button
                   SizedBox(
                     width: double.infinity,
@@ -176,12 +201,13 @@ class SetUpProfile extends ConsumerWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        backgroundColor: setUpProfileState == 1
+                        backgroundColor: setUpProfileState.selection == 1
                             ? AppColors.secondary
                             : AppColors.white,
-                        side: setUpProfileState == 1
+                        side: setUpProfileState.selection == 1
                             ? null
-                            : const BorderSide(width: 2, color: AppColors.borderColor),
+                            : const BorderSide(
+                                width: 2, color: AppColors.borderColor),
                       ),
                       onPressed: () {
                         setUpProfileNotifier.selectFreelancer();
@@ -189,10 +215,10 @@ class SetUpProfile extends ConsumerWidget {
                       child: Text(
                         "As an individual/Freelancer",
                         style: context.textTheme.titleSmall?.copyWith(
-                          fontWeight: setUpProfileState == 1
-                              ? FontWeight.w600
-                              : FontWeight.w400,
-                          color: setUpProfileState == 1 ? AppColors.white : AppColors.black,
+                          fontWeight: FontWeight.w400,
+                          color: setUpProfileState.selection == 1
+                              ? AppColors.white
+                              : AppColors.black,
                         ),
                       ),
                     ),
@@ -203,15 +229,16 @@ class SetUpProfile extends ConsumerWidget {
               SizedBox(
                 width: context.dynamicScreenWidth(400),
                 child: DefaultButton2(
-                  isLoading: false,
-                  onPressed: setUpProfileState == -1
-                      ? () {}  // Disable button, using an empty function
+                  isLoading: setUpProfileState.isLoading,
+                  onPressed: setUpProfileState.selection == -1
+                      ? () {} // Disable button, using an empty function
                       : () {
-                    // Your actual onPressed logic goes here
-                  },
+                          setUpProfileNotifier.setLoading(true);
+                        },
                   text: "Proceed",
-                  buttonColor: setUpProfileState == -1
-                      ? AppColors.disabled // Grey out the button when no selection
+                  buttonColor: setUpProfileState.selection == -1
+                      ? AppColors
+                          .disabled // Grey out the button when no selection
                       : AppColors.primary, // Active button color
                 ),
               ),
@@ -220,11 +247,11 @@ class SetUpProfile extends ConsumerWidget {
                 child: Text(
                   "Skip for now",
                   style: context.textTheme.titleMedium?.copyWith(
-                      decoration: TextDecoration.underline,
-                      decorationColor: AppColors.primary,
-                      fontSize: 17,
-                      fontWeight: FontWeight.w600,
-                      color: AppColors.primary,
+                    decoration: TextDecoration.underline,
+                    decorationColor: AppColors.primary,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: AppColors.primary,
                   ),
                 ),
               )
