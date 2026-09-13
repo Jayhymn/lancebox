@@ -110,20 +110,8 @@ class SetUpProfile extends ConsumerWidget {
                             const CircularProgressIndicator()
                           else if (setUpProfileState.uploadState ==
                               UploadingState.uploaded)
-                            Column(
-                              children: [
-                                SvgPicture.asset(ImagesPaths.success,
-                                    height: 40, width: 40),
-                                const SizedBox(height: 10),
-                                Text(
-                                  "Image Uploaded Successfully!",
-                                  style: context.textTheme.bodyMedium?.copyWith(
-                                    color: AppColors.black,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            )
+                            SvgPicture.asset(ImagesPaths.success,
+                                height: 40, width: 40)
                           else
                             SvgPicture.asset(ImagesPaths.gallery,
                                 height: 40, width: 40),
