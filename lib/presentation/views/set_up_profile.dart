@@ -79,25 +79,22 @@ class SetUpProfile extends ConsumerWidget {
               SizedBox(height: context.dynamicScreenHeight(20)),
               Center(
                 child: GestureDetector(
-                  onTap: () {
-                    setUpProfileState.uploadState == UploadingState.uploading
-                        ? () {}
-                        : () async {
-                            var uploaded = await ImageUtils.getImage(
-                                ImageSource.gallery, setUpProfileNotifier);
-                            setUpProfileNotifier.setUploading(uploaded
-                                ? UploadingState.notUploading
-                                : UploadingState.uploaded);
-                          };
-                  },
+                  onTap:
+                      setUpProfileState.uploadState == UploadingState.uploading
+                          ? null // Disable when uploading
+                          : () async {
+                              bool uploaded = await ImageUtils.getImage(
+                                  ImageSource.gallery, setUpProfileNotifier);
+                              if (uploaded) {
+                                setUpProfileNotifier
+                                    .setUploading(UploadingState.uploaded);
+                              }
+                            },
                   child: Container(
                     width: context.dynamicScreenWidth(400),
                     height: context.dynamicScreenHeight(120),
                     decoration: BoxDecoration(
-                      border: Border.all(
-                        width: 2,
-                        color: Colors.transparent,
-                      ),
+                      border: Border.all(width: 2, color: Colors.transparent),
                     ),
                     child: CustomPaint(
                       painter: DashRectPainter(
@@ -107,25 +104,41 @@ class SetUpProfile extends ConsumerWidget {
                       ),
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          setUpProfileState.uploadState ==
-                                  UploadingState.uploading
-                              ? const CircularProgressIndicator()
-                              : SvgPicture.asset(
-                                  ImagesPaths.gallery, // Path to your SVG image
-                                  height: 40,
-                                  width: 40,
+                          if (setUpProfileState.uploadState ==
+                              UploadingState.uploading)
+                            const CircularProgressIndicator()
+                          else if (setUpProfileState.uploadState ==
+                              UploadingState.uploaded)
+                            Column(
+                              children: [
+                                SvgPicture.asset(ImagesPaths.success,
+                                    height: 40, width: 40),
+                                const SizedBox(height: 10),
+                                Text(
+                                  "Image Uploaded Successfully!",
+                                  style: context.textTheme.bodyMedium?.copyWith(
+                                    color: AppColors.black,
+                                    fontWeight: FontWeight.w600,
+                                  ),
                                 ),
+                              ],
+                            )
+                          else
+                            SvgPicture.asset(ImagesPaths.gallery,
+                                height: 40, width: 40),
                           const SizedBox(height: 10),
-                          // Text
                           Text(
                             setUpProfileState.uploadState ==
                                     UploadingState.uploading
-                                ? "uploading image"
-                                : "Drag or Select a file",
-                            style: context.textTheme.bodyMedium
-                                ?.copyWith(color: AppColors.disabled),
+                                ? "Uploading image..."
+                                : setUpProfileState.uploadState ==
+                                        UploadingState.uploaded
+                                    ? "Upload Successful"
+                                    : "Drag or Select a file",
+                            style: context.textTheme.bodyMedium?.copyWith(
+                              color: AppColors.disabled,
+                            ),
                           ),
                         ],
                       ),
