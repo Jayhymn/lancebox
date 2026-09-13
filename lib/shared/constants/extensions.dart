@@ -5,8 +5,20 @@ extension MediaQuerySizeExtension on BuildContext {
     return MediaQuery.sizeOf(this).width * w;
   }
 
+  double maxScreenWidth() {
+    return MediaQuery.sizeOf(this).width;
+  }
+
+  double percentScreenWidth(double percent) {
+    return MediaQuery.sizeOf(this).width * percent;
+  }
+
   double sizeHeight(double h) {
     return MediaQuery.sizeOf(this).height * h;
+  }
+
+  double halfHeight() {
+    return MediaQuery.sizeOf(this).height / 2;
   }
 
 

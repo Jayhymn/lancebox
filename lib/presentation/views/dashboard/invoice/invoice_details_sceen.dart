@@ -13,7 +13,7 @@ class InvoiceDetailsScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 20.0),
           child: Align(
             alignment: Alignment.centerLeft,
@@ -32,7 +32,7 @@ class InvoiceDetailsScreen extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  "Bank Details",
+                  "Invoice Details",
                   textAlign: TextAlign.start,
                   style: context.textTheme.titleMedium,
                 ),
@@ -66,74 +66,230 @@ class InvoiceDetailsForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: Column(
-        spacing: 20,
-        children: [
-          LanceIBoxInputField(
-            onSaved: (value) {},
-            onChanged: (value) {},
-            validator: (value) {
-              return "";
-            },
-            labelText: "Bank Number",
-            inputType: TextInputType.number,
-            hintText: "Enter your Bank Number",
-            autoFills: const [AutofillHints.telephoneNumber],
-          ),
-          LanceIBoxInputField(
-            onSaved: (value) {},
-            onChanged: (value) {},
-            validator: (value) {
-              return "";
-            },
-            labelText: "Name of Bank",
-            inputType: TextInputType.text,
-            textCaps: true,
-            hintText: "Enter your Bank Name",
-            autoFills: const [AutofillHints.name],
-          ),
-          LanceIBoxInputField(
-            onSaved: (value) {},
-            onChanged: (value) {},
-            validator: (value) {
-              return "";
-            },
-            labelText: "Name of Account",
-            inputType: TextInputType.name,
-            textCaps: true,
-            hintText: "Enter the Name on your Account",
-            autoFills: const [AutofillHints.name],
-          ),
-          LanceIBoxInputField(
-            onSaved: (value) {},
-            onChanged: (value) {},
-            validator: (value) {
-              return "";
-            },
-            labelText: "Terms of Payment",
-            inputType: TextInputType.text,
-            hintText: "e.g payments will be made in installments",
-            autoFills: const [],
-          ),
-          SizedBox(
-            height: context.dynamicScreenHeight(30),
-          ),
-          DefaultButton2(
-            isLoading: false,
-            onPressed: () {
-              // if (!formState.isLoading &&
-              //     formNotifier.submitForm()) {
-              Navigator.pushNamed(context, '/bankDetails');
-              // }
-            },
-            labelColor: AppColors.white,
-            text: "Preview Invoice",
-            buttonColor: AppColors.disabled,
-          )
-        ],
+    return SingleChildScrollView(
+      child: Form(
+        child: Column(
+          spacing: 20,
+          children: [
+            LanceIBoxInputField(
+              onSaved: (value) {},
+              onChanged: (value) {},
+              validator: (value) {
+                return "";
+              },
+              labelText: "Invoice Number",
+              inputType: TextInputType.number,
+              hintText: "01",
+              percentScreenWidth: 0.43,
+              autoFills: const [AutofillHints.telephoneNumber],
+            ),
+            LanceIBoxInputField(
+              onSaved: (value) {},
+              onChanged: (value) {},
+              validator: (value) {
+                return "";
+              },
+              labelText: "Client's Name",
+              inputType: TextInputType.text,
+              textCaps: true,
+              hintText: "Enter Client's Name",
+              autoFills: const [AutofillHints.name],
+            ),
+            LanceIBoxInputField(
+              onSaved: (value) {},
+              onChanged: (value) {},
+              validator: (value) {
+                return "";
+              },
+              labelText: "Your Name",
+              inputType: TextInputType.text,
+              textCaps: true,
+              hintText: "Enter Your Name",
+              autoFills: const [AutofillHints.name],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                LanceIBoxInputField(
+                  onSaved: (value) {},
+                  onChanged: (value) {},
+                  validator: (value) {
+                    return "";
+                  },
+                  labelText: "Insurance Date",
+                  inputType: TextInputType.datetime,
+                  textCaps: true,
+                  hintText: "22/03/2023",
+                  percentScreenWidth: 0.43,
+                  autoFills: const [AutofillHints.name],
+                ),
+                LanceIBoxInputField(
+                  onSaved: (value) {},
+                  onChanged: (value) {},
+                  validator: (value) {
+                    return "";
+                  },
+                  labelText: "Currency",
+                  inputType: TextInputType.number,
+                  hintText: "01",
+                  percentScreenWidth: 0.43,
+                  autoFills: const [AutofillHints.telephoneNumber],
+                ),
+              ],
+            ),
+            // SizedBox(height: context.sizeWidth(5),),
+            Align(
+              alignment: Alignment.centerLeft,
+              child: Text(
+                "Invoice Details",
+                style: context.textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w800, color: AppColors.black),
+              ),
+            ),
+            LanceIBoxInputField(
+              onSaved: (value) {},
+              onChanged: (value) {},
+              validator: (value) {
+                return "";
+              },
+              labelText: "Invoice Title",
+              inputType: TextInputType.name,
+              textCaps: true,
+              hintText: "Enter Invoice Title",
+              autoFills: const [AutofillHints.name],
+            ),
+            LanceIBoxInputField(
+              onSaved: (value) {},
+              onChanged: (value) {},
+              validator: (value) {
+                return "";
+              },
+              labelText: "Item Description",
+              inputType: TextInputType.text,
+              hintText: "Enter a Description",
+              autoFills: const [],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                LanceIBoxInputField(
+                  onSaved: (value) {},
+                  onChanged: (value) {},
+                  validator: (value) {
+                    return "";
+                  },
+                  labelText: "Quantity",
+                  inputType: TextInputType.datetime,
+                  textCaps: true,
+                  hintText: "e.g 2.00",
+                  percentScreenWidth: 0.43,
+                  autoFills: const [AutofillHints.name],
+                ),
+                LanceIBoxInputField(
+                  onSaved: (value) {},
+                  onChanged: (value) {},
+                  validator: (value) {
+                    return "";
+                  },
+                  labelText: "Price",
+                  inputType: TextInputType.number,
+                  hintText: "e.g 3,000,000.00",
+                  percentScreenWidth: 0.43,
+                  autoFills: const [AutofillHints.telephoneNumber],
+                ),
+              ],
+            ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                LanceIBoxInputField(
+                  onSaved: (value) {},
+                  onChanged: (value) {},
+                  validator: (value) {
+                    return "";
+                  },
+                  labelText: "Amount",
+                  inputType: TextInputType.datetime,
+                  textCaps: true,
+                  hintText: "0.00",
+                  percentScreenWidth: 0.75,
+                  autoFills: const [AutofillHints.name],
+                ),
+                SvgPicture.asset(
+                  ImagesPaths.trashIcon,
+                )
+              ],
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.pushReplacementNamed(context, '/dashboard');
+              },
+              child: InkWell(
+                child: Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    "Add New Item",
+                    style: context.textTheme.titleMedium?.copyWith(
+                      shadows: [
+                        const Shadow(
+                            color: AppColors.primary, offset: Offset(0, -5))
+                      ],
+                      fontSize: 14,
+                      fontWeight: FontWeight.w600,
+                      color: Colors.transparent,
+                      decoration: TextDecoration.underline,
+                      decorationColor: AppColors.primary,
+                      decorationThickness: 1.5,
+                      decorationStyle: TextDecorationStyle.solid,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: context.dynamicScreenHeight(30),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("VAT", style: context.textTheme.bodyMedium,),
+                Text("N 0.00", style: context.textTheme.bodyMedium,),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Shipping", style: context.textTheme.bodyMedium,),
+                Text("N 0.00", style: context.textTheme.bodyMedium,),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text("Total", style: context.textTheme.bodyMedium,),
+                Text("N 0.00", style: context.textTheme.bodyMedium,),
+              ],
+            ),
+            SizedBox(
+              height: context.dynamicScreenHeight(30),
+            ),
+            DefaultButton2(
+              isLoading: false,
+              onPressed: () {
+                // if (!formState.isLoading &&
+                //     formNotifier.submitForm()) {
+                Navigator.pushNamed(context, '/bankDetails');
+                // }
+              },
+              labelColor: AppColors.white,
+              text: "Preview Invoice",
+              buttonColor: AppColors.disabled,
+            )
+          ],
+        ),
       ),
     );
   }
 }
-
