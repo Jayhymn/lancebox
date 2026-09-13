@@ -17,6 +17,8 @@ class SignUpScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final formKey = GlobalKey<FormState>();
+
     final formState = ref.watch(signUpFormProvider);
     final formNotifier = ref.read(signUpFormProvider.notifier);
 
@@ -46,19 +48,20 @@ class SignUpScreen extends ConsumerWidget {
                   style: context.textTheme.titleSmall,
                 ),
                 Form(
-                  key: formState.formKey,
+                  key: formKey,
+                  autovalidateMode: AutovalidateMode.always,
                   child: AutofillGroup(
                     child: Column(
                       children: [
                         EmailFormField(
                           onSaved: (value) {
-                            formNotifier.updateEmail(value ?? "");
+                            formNotifier.updateEmail(value);
                           },
                           onChanged: (value) {
                             formNotifier.validateEmail(value);
                           },
                           validator: (value) =>
-                              formNotifier.validateEmail(value ?? ""),
+                              formNotifier.validateEmail(value),
                           labelText: 'Email Address',
                         ),
                         SizedBox(height: context.dynamicScreenHeight(15)),
@@ -70,29 +73,32 @@ class SignUpScreen extends ConsumerWidget {
                           validator: (value) =>
                               formNotifier.validatePassword(value ?? ""),
                           obscureText: formState.obscurePassword,
-                          toggleVisibility: formNotifier.togglePasswordVisibility,
+                          toggleVisibility:
+                              formNotifier.togglePasswordVisibility,
                           labelText: 'Password',
                         ),
                         SizedBox(height: context.dynamicScreenHeight(15)),
                         PasswordFormField(
                           onChanged: (value) =>
                               formNotifier.validatePassword(value),
-                          onSaved: (value) =>
-                              formNotifier.updatePassword(value ?? ""),
-                          validator: (value) =>
-                              formNotifier.validatePassword(value ?? ""),
+                          onSaved: (value) => {},
+                          validator: (value) => null,
+                              // formNotifier.validatePasswordMatch(value ?? ""),
                           obscureText: formState.obscurePassword,
-                          toggleVisibility: formNotifier.togglePasswordVisibility,
+                          toggleVisibility:
+                              formNotifier.togglePasswordVisibility,
                           labelText: 'Confirm Password',
                         ),
-                        FormError(errors: formState.errors),
+                        // FormError(errors: formState.errors),
 
                         SizedBox(height: context.dynamicScreenHeight(25)),
                         DefaultButton(
                           isLoading: formState.isLoading,
                           onPressed: () async {
-                            if (!formState.isLoading &&
-                                formNotifier.submitForm()) {
+                            final form = formKey.currentState;
+
+                            if (form != null && form.validate()) {
+                              formNotifier.setLoading(false);
                               Navigator.pushNamed(context, '/setup');
                             }
                           },
@@ -106,7 +112,6 @@ class SignUpScreen extends ConsumerWidget {
                   "Or",
                   style: context.textTheme.titleMedium,
                 ),
-
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -126,7 +131,8 @@ class SignUpScreen extends ConsumerWidget {
                     textAlign: TextAlign.center,
                     text: TextSpan(
                       text: 'By signing up you agree to our ',
-                      style: context.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w400),
+                      style: context.textTheme.bodyMedium
+                          ?.copyWith(fontWeight: FontWeight.w400),
                       children: [
                         TextSpan(
                           text: 'Terms and Conditions',
@@ -135,7 +141,8 @@ class SignUpScreen extends ConsumerWidget {
                             decoration: TextDecoration.underline,
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => Navigator.pushNamed(context, '/terms'),
+                            ..onTap =
+                                () => Navigator.pushNamed(context, '/terms'),
                         ),
                         const TextSpan(text: ' and '),
                         TextSpan(
@@ -145,7 +152,8 @@ class SignUpScreen extends ConsumerWidget {
                             decoration: TextDecoration.underline,
                           ),
                           recognizer: TapGestureRecognizer()
-                            ..onTap = () => Navigator.pushNamed(context, '/policy'),
+                            ..onTap =
+                                () => Navigator.pushNamed(context, '/policy'),
                         ),
                       ],
                     ),
@@ -158,28 +166,4 @@ class SignUpScreen extends ConsumerWidget {
       ),
     );
   }
-
-  // void firebaseErrorHandler(
-  //     FirebaseAuthException authException, SignUpFormNotifier formNotifier) {
-  //   switch (authException.code) {
-  //     case "user-disabled":
-  //     case "user-not-found":
-  //       formNotifier.addError(LanceBoxError.userNotFound);
-  //       break;
-  //
-  //     case "wrong-password":
-  //       formNotifier.addError(LanceBoxError.emailPasswordCombination);
-  //       break;
-  //
-  //     case "too-many-requests":
-  //       formNotifier.addError(LanceBoxError.tooManyRequests);
-  //       break;
-  //
-  //     default:
-  //       if (kDebugMode) {
-  //         print("error code is ${authException.code}");
-  //       }
-  //       formNotifier.addError(LanceBoxError.internetConnection);
-  //   }
-  // }
 }

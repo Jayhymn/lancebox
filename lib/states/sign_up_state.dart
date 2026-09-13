@@ -22,8 +22,6 @@ class SignUpFormState {
     this.errors = const [],
   });
 
-  get formKey => GlobalKey<FormState>();
-
   SignUpFormState copyWith({
     String? email,
     String? password,
@@ -43,9 +41,12 @@ class SignUpFormState {
 
 // State Notifier
 class SignUpFormNotifier extends StateNotifier<SignUpFormState> {
+
+  // get formKey => GlobalKey<FormState>();
+
   SignUpFormNotifier() : super(SignUpFormState());
 
-  void updateEmail(String value) {
+  void updateEmail(String? value) {
     state = state.copyWith(email: value);
   }
 
@@ -73,25 +74,28 @@ class SignUpFormNotifier extends StateNotifier<SignUpFormState> {
 
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      addError(LanceBoxError.emailIsNull);
       return "Email is required";
     } else if (!Validator.emailValidatorRegExp.hasMatch(value)) {
-      addError(LanceBoxError.invalidEmail);
       return "Invalid email format";
-    } else {
-      removeError(LanceBoxError.emailIsNull);
-      removeError(LanceBoxError.invalidEmail);
-      return null;
     }
+    return null; // No state modifications here
   }
 
   String? validatePassword(String? value) { // Return String? to be consistent with other validators
     if (value == null || value.length < 8) {
-      addError(LanceBoxError.passwordTooShort);
       return "Password must be at least 8 characters long";
     } else { // Only remove the error if validation passes
-      removeError(LanceBoxError.passwordTooShort);
       return null; // Return null when validation passes
+    }
+  }
+
+  String? validatePasswordMatch(String? confirmPassword) {
+    if (confirmPassword == null || confirmPassword.isEmpty) {
+      return "Please confirm your password";
+    } else if (confirmPassword != state.password) {
+      return "Passwords do not match";
+    } else {
+      return null;
     }
   }
 
@@ -112,3 +116,4 @@ class SignUpFormNotifier extends StateNotifier<SignUpFormState> {
 final signUpFormProvider = StateNotifierProvider<SignUpFormNotifier, SignUpFormState>(
       (ref) => SignUpFormNotifier(),
 );
+

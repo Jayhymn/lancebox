@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lance_box/app.dart';
 
-class PasswordFormField extends StatelessWidget {
+class PasswordFormField extends StatefulWidget {
   final Function(String?) onSaved;
   final Function(String) onChanged;
   final String? Function(String?)? validator;
@@ -20,13 +20,26 @@ class PasswordFormField extends StatelessWidget {
   });
 
   @override
+  State<StatefulWidget> createState() => _PasswordFormFieldState();
+}
+
+class _PasswordFormFieldState extends State<PasswordFormField> {
+  late bool _obscureText;
+
+  @override
+  void initState() {
+    super.initState();
+    _obscureText = widget.obscureText;
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         // Text widget to display the label above the TextFormField
         Text(
-          labelText, // The custom label text
+          widget.labelText, // The custom label text
           style: context.textTheme.bodyMedium,
         ),
         const SizedBox(
@@ -34,21 +47,30 @@ class PasswordFormField extends StatelessWidget {
         TextFormField(
           // style: context.textTheme.labelMedium,
           textInputAction: TextInputAction.send,
-          obscureText: obscureText,
-          onSaved: onSaved,
+          obscureText: _obscureText,
+          onSaved: widget.onSaved,
           autofillHints: const [AutofillHints.password],
-          onChanged: onChanged,
-          validator: validator,
+          onChanged: widget.onChanged,
+          validator: widget.validator,
           decoration: InputDecoration(
-            border: InputBorder.none,
+            border: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+              borderSide: BorderSide(
+                color: Colors.grey,
+                width: 0.5,
+              ),
+            ),
             enabledBorder: const OutlineInputBorder(
-                borderRadius: BorderRadius.all(
-                  Radius.circular(15),
-                ),
-                borderSide: BorderSide(
-                  color: Colors.grey,
-                  width: 0.5,
-                )),
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+              borderSide: BorderSide(
+                color: Colors.grey,
+                width: 0.5,
+              ),
+            ),
             focusedBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(
                 Radius.circular(15),
@@ -60,11 +82,15 @@ class PasswordFormField extends StatelessWidget {
             ),
             hintText: "********",
             contentPadding:
-                const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+            const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
             floatingLabelBehavior: FloatingLabelBehavior.never,
             suffixIcon: GestureDetector(
-              onTap: toggleVisibility,
-              child: Icon(obscureText
+              onTap: (){
+                setState(() {
+                  _obscureText = !_obscureText; // Toggle local state
+                });
+              },
+              child: Icon(_obscureText
                   ? Icons.visibility_off_outlined
                   : Icons.visibility_outlined),
             ),

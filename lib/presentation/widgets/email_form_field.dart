@@ -33,7 +33,15 @@ class EmailFormField extends StatelessWidget {
           onChanged: onChanged,
           validator: validator,
           decoration: const InputDecoration(
-            border: InputBorder.none,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.all(
+                Radius.circular(15),
+              ),
+              borderSide: BorderSide(
+                color: Colors.grey,
+                width: 0.5,
+              ),
+            ),
             enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.all(
                   Radius.circular(15),
