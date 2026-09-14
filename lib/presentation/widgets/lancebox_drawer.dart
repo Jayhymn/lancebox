@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lance_box/app.dart';
+import 'package:lance_box/shared/constants/routes.dart';
+import 'package:lance_box/states/invoice_state.dart';
+import 'package:lance_box/states/set_up_state.dart';
+import 'package:lance_box/states/sign_up_state.dart';
 
-class LanceBoxDrawer extends StatelessWidget {
+class LanceBoxDrawer extends ConsumerWidget {
   final void Function(int index) onItemTapped;
 
   const LanceBoxDrawer({
@@ -10,8 +15,20 @@ class LanceBoxDrawer extends StatelessWidget {
     required this.onItemTapped,
   });
 
+  void _logout(BuildContext context, WidgetRef ref) {
+    ref.read(signUpFormProvider.notifier).reset();
+    ref.read(setupProvider.notifier).reset();
+    ref.read(invoiceProvider.notifier).reset();
+    ref.read(invoiceDraftProvider.notifier).reset();
+    ref.read(selectedIndexProvider.notifier).state = 0;
+    Navigator.of(context).pushNamedAndRemoveUntil(
+      Routes.signupScreen,
+      (route) => false,
+    );
+  }
+
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Drawer(
       backgroundColor: AppColors.secondary,
       shape: const RoundedRectangleBorder(
@@ -34,7 +51,8 @@ class LanceBoxDrawer extends StatelessWidget {
                     onTap: () => Navigator.pop(context),
                     child: SvgPicture.asset(
                       ImagesPaths.close,
-                      color: AppColors.white,
+                      colorFilter: const ColorFilter.mode(
+                          AppColors.white, BlendMode.srcIn),
                     ),
                   ),
                   const SizedBox(height: 25), // Space between the icons
@@ -69,7 +87,7 @@ class LanceBoxDrawer extends StatelessWidget {
           DrawerItem(
             title: "Log Out",
             leading: ImagesPaths.logout,
-            onTap: () {}, // Ensure the correct index
+            onTap: () => _logout(context, ref),
           ),
         ],
       ),

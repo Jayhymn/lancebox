@@ -4,16 +4,25 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lance_box/app.dart';
 import 'package:lance_box/shared/constants/routes.dart';
 import 'package:lance_box/states/invoice_state.dart';
-
-import '../../../widgets/invoice_button.dart';
+import 'package:lance_box/states/sign_up_state.dart';
 
 class InvoiceScreen extends ConsumerWidget {
   const InvoiceScreen({super.key});
+
+  String _greetingFromEmail(String? email) {
+    if (email == null || email.trim().isEmpty) return 'Welcome';
+    final localPart = email.split('@').first.trim();
+    if (localPart.isEmpty) return 'Welcome';
+    final capitalized = localPart[0].toUpperCase() + localPart.substring(1);
+    return 'Welcome $capitalized';
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final invoiceProviderState = ref.watch(invoiceProvider);
     final invoiceProviderNotifier = ref.watch(invoiceProvider.notifier);
+    final greeting =
+        _greetingFromEmail(ref.watch(signUpFormProvider).email);
 
     return Scaffold(
       body: SafeArea(
@@ -25,7 +34,7 @@ class InvoiceScreen extends ConsumerWidget {
             spacing: 10,
             children: [
               Text(
-                "Welcome Subomi",
+                greeting,
                 textAlign: TextAlign.start,
                 style: context.textTheme.titleMedium,
               ),
@@ -44,8 +53,8 @@ class InvoiceScreen extends ConsumerWidget {
                     titleLabel: "Create New Invoice",
                     bodyLabel: "create a quick Invoice to send",
                     isSelected: invoiceProviderState.selection == 0,
-                    onPressed:(){
-                      invoiceProviderNotifier.selectCreateInvoice;
+                    onPressed: () {
+                      invoiceProviderNotifier.selectCreateInvoice();
                       Navigator.pushNamed(context, Routes.createInvoiceScreen);
                     },
                     useInkwell: false,
@@ -54,7 +63,9 @@ class InvoiceScreen extends ConsumerWidget {
                     titleLabel: "Invoice Created",
                     bodyLabel: "View All",
                     isSelected: invoiceProviderState.selection == 1,
-                    onPressed: invoiceProviderNotifier.selectCreateInvoice,
+                    onPressed: () {
+                      invoiceProviderNotifier.selectPreviousInvoices();
+                    },
                     useInkwell: true,
                   ),
                 ],

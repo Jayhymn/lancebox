@@ -1,12 +1,7 @@
-import 'dart:ffi';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../shared/constants/errors.dart';
 import '../shared/constants/validators.dart';
 
-// Sign Up Form State
 class SignUpFormState {
   final String? email;
   final String? password;
@@ -39,15 +34,15 @@ class SignUpFormState {
   }
 }
 
-// State Notifier
 class SignUpFormNotifier extends StateNotifier<SignUpFormState> {
-
-  // get formKey => GlobalKey<FormState>();
-
   SignUpFormNotifier() : super(SignUpFormState());
 
   void updateEmail(String? value) {
     state = state.copyWith(email: value);
+  }
+
+  void reset() {
+    state = SignUpFormState();
   }
 
   void updatePassword(String value) {
@@ -69,24 +64,26 @@ class SignUpFormNotifier extends StateNotifier<SignUpFormState> {
   }
 
   void removeError(String error) {
-    state = state.copyWith(errors: state.errors.where((e) => e != error).toList());
+    state = state.copyWith(
+        errors: state.errors.where((e) => e != error).toList());
   }
 
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
       return "Email is required";
-    } else if (!Validator.emailValidatorRegExp.hasMatch(value)) {
+    } else if (!Validator.emailRegExp.hasMatch(value)) {
       return "Invalid email format";
     }
-    return null; // No state modifications here
+    return null;
   }
 
-  String? validatePassword(String? value) { // Return String? to be consistent with other validators
-    if (value == null || value.length < 8) {
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return "Password is required";
+    } else if (value.length < 8) {
       return "Password must be at least 8 characters long";
-    } else { // Only remove the error if validation passes
-      return null; // Return null when validation passes
     }
+    return null;
   }
 
   String? validatePasswordMatch(String? confirmPassword) {
@@ -94,26 +91,27 @@ class SignUpFormNotifier extends StateNotifier<SignUpFormState> {
       return "Please confirm your password";
     } else if (confirmPassword != state.password) {
       return "Passwords do not match";
-    } else {
-      return null;
     }
+    return null;
   }
 
   bool get isValid {
-    return state.errors.isEmpty && state.email != null && state.password != null;
+    return state.email != null &&
+        state.email!.isNotEmpty &&
+        state.password != null &&
+        state.password!.length >= 8;
   }
 
-  bool submitForm(){
-    if (state.errors.isNotEmpty) {
+  bool submitForm() {
+    if (!isValid) {
       return false;
     }
     state = state.copyWith(isLoading: true);
     return true;
-    }
+  }
 }
 
-// Riverpod Provider
-final signUpFormProvider = StateNotifierProvider<SignUpFormNotifier, SignUpFormState>(
-      (ref) => SignUpFormNotifier(),
+final signUpFormProvider =
+    StateNotifierProvider<SignUpFormNotifier, SignUpFormState>(
+  (ref) => SignUpFormNotifier(),
 );
-

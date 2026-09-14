@@ -1,56 +1,59 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+enum AccountType { none, business, freelancer }
+
+enum UploadingState { notUploading, uploading, uploaded }
+
 class SetUpState extends StateNotifier<SetUpStateModel> {
   SetUpState() : super(SetUpStateModel());
 
   void selectBusinessOwner() {
-    state = state.copyWith(selection: 0, isLoading: false);  // Set selection to 0 (Business Owner)
+    state = state.copyWith(accountType: AccountType.business);
   }
 
   void selectFreelancer() {
-    state = state.copyWith(selection: 1, isLoading: false);  // Set selection to 1 (Freelancer)
+    state = state.copyWith(accountType: AccountType.freelancer);
   }
 
   void setLoading(bool loading) {
-    state = state.copyWith(isLoading: loading);  // Toggle the loading state
+    state = state.copyWith(isLoading: loading);
   }
 
   void setUploading(UploadingState uploading) {
-    state = state.copyWith(isUploading: uploading);  // Toggle the loading state
+    state = state.copyWith(uploadState: uploading);
   }
-}
 
-enum UploadingState {
-  notUploading,
-  uploading,
-  uploaded
+  void reset() {
+    state = SetUpStateModel();
+  }
 }
 
 class SetUpStateModel {
   final bool isLoading;
   final UploadingState uploadState;
-  final int selection;
+  final AccountType accountType;
 
   SetUpStateModel({
     this.isLoading = false,
     this.uploadState = UploadingState.notUploading,
-    this.selection = -1,  // Default to no selection
+    this.accountType = AccountType.none,
   });
+
+  bool get hasSelection => accountType != AccountType.none;
 
   SetUpStateModel copyWith({
     bool? isLoading,
-    UploadingState? isUploading,
-    int? selection,
+    UploadingState? uploadState,
+    AccountType? accountType,
   }) {
     return SetUpStateModel(
       isLoading: isLoading ?? this.isLoading,
-      uploadState: isUploading ?? this.uploadState,
-      selection: selection ?? this.selection,
+      uploadState: uploadState ?? this.uploadState,
+      accountType: accountType ?? this.accountType,
     );
   }
 }
 
-// Define a provider to access the SetUpProfileStateNotifier
 final setupProvider = StateNotifierProvider<SetUpState, SetUpStateModel>(
-      (ref) => SetUpState(),
+  (ref) => SetUpState(),
 );
