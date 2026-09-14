@@ -1,8 +1,7 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:lance_box/app.dart';
 
 import '../../../states/set_up_state.dart';
-import '../../widgets/selection_button.dart';
 
 class AccountSelectionSection extends StatelessWidget {
   const AccountSelectionSection({
@@ -20,7 +19,7 @@ class AccountSelectionSection extends StatelessWidget {
       spacing: 15,
       children: [
         SizedBox(
-          width: context.dynamicScreenWidth(400),
+          width: double.infinity,
           child: Text(
             "How will you like to use LanceBox?",
             style: context.textTheme.bodyMedium
@@ -29,12 +28,12 @@ class AccountSelectionSection extends StatelessWidget {
         ),
         SelectionButton(
           text: "As a Business Owner",
-          isSelected: setUpProfileState.selection == 0,
+          isSelected: setUpProfileState.accountType == AccountType.business,
           onPressed: () => setUpProfileNotifier.selectBusinessOwner(),
         ),
         SelectionButton(
           text: "As an Individual/Freelancer",
-          isSelected: setUpProfileState.selection == 1,
+          isSelected: setUpProfileState.accountType == AccountType.freelancer,
           onPressed: () => setUpProfileNotifier.selectFreelancer(),
         ),
       ],

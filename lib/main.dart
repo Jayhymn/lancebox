@@ -3,7 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lance_box/presentation/views/auth/signup_screen.dart';
 import 'package:lance_box/presentation/views/dashboard/dashboard.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice/add_bank_details_screen.dart';
-import 'package:lance_box/presentation/views/dashboard/invoice/create_invoice_sceen.dart';
+import 'package:lance_box/presentation/views/dashboard/invoice/create_invoice_screen.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice/invoice_screen.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice/preview_invoice.dart';
 import 'package:lance_box/presentation/views/dashboard/profile_screen.dart';
@@ -14,6 +14,7 @@ import 'package:lance_box/shared/constants/routes.dart';
 import 'package:lance_box/shared/shared.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const ProviderScope(child: MyApp()));
 }
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'LanceBox',
+      debugShowCheckedModeBanner: false,
       theme: AppThemeData.lightTheme,
       initialRoute: '/',
       routes: {

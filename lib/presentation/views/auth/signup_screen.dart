@@ -1,24 +1,33 @@
-// import 'package:firebase_auth/firebase_auth.dart';
-
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lance_box/app.dart';
-import 'package:lance_box/presentation/widgets/default_button.dart';
-import 'package:lance_box/presentation/widgets/email_form_field.dart';
-import 'package:lance_box/presentation/widgets/password_form_field.dart';
 import 'package:lance_box/shared/constants/routes.dart';
 
 import '../../../states/sign_up_state.dart';
 
-class SignUpScreen extends ConsumerWidget {
+class SignUpScreen extends ConsumerStatefulWidget {
   const SignUpScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final formKey = GlobalKey<FormState>();
+  ConsumerState<SignUpScreen> createState() => _SignUpScreenState();
+}
 
+class _SignUpScreenState extends ConsumerState<SignUpScreen> {
+  final _formKey = GlobalKey<FormState>();
+  final _passwordFocusNode = FocusNode();
+  final _confirmPasswordFocusNode = FocusNode();
+
+  @override
+  void dispose() {
+    _passwordFocusNode.dispose();
+    _confirmPasswordFocusNode.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final formState = ref.watch(signUpFormProvider);
     final formNotifier = ref.read(signUpFormProvider.notifier);
 
@@ -31,11 +40,13 @@ class SignUpScreen extends ConsumerWidget {
               spacing: 20,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const SingUpTopSection(),
-                SingUpForm(
-                  formKey: formKey,
+                const SignUpTopSection(),
+                _SignUpForm(
+                  formKey: _formKey,
                   formNotifier: formNotifier,
                   formState: formState,
+                  passwordFocusNode: _passwordFocusNode,
+                  confirmPasswordFocusNode: _confirmPasswordFocusNode,
                 ),
                 Text(
                   "Or",
@@ -53,9 +64,7 @@ class SignUpScreen extends ConsumerWidget {
 }
 
 class SocialSignUp extends StatelessWidget {
-  const SocialSignUp({
-    super.key,
-  });
+  const SocialSignUp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -75,10 +84,8 @@ class SocialSignUp extends StatelessWidget {
   }
 }
 
-class SingUpTopSection extends StatelessWidget {
-  const SingUpTopSection({
-    super.key,
-  });
+class SignUpTopSection extends StatelessWidget {
+  const SignUpTopSection({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -96,7 +103,7 @@ class SingUpTopSection extends StatelessWidget {
           style: context.textTheme.titleMedium,
         ),
         Text(
-          "Let’s create your account",
+          "Let's create your account",
           textAlign: TextAlign.center,
           style: context.textTheme.titleSmall,
         ),
@@ -106,14 +113,12 @@ class SingUpTopSection extends StatelessWidget {
 }
 
 class TAndC extends StatelessWidget {
-  const TAndC({
-    super.key,
-  });
+  const TAndC({super.key});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: context.dynamicScreenWidth(320),
+      width: context.percentScreenWidth(0.85),
       child: RichText(
         textAlign: TextAlign.center,
         text: TextSpan(
@@ -128,7 +133,12 @@ class TAndC extends StatelessWidget {
                 decoration: TextDecoration.underline,
               ),
               recognizer: TapGestureRecognizer()
-                ..onTap = () => Navigator.pushNamed(context, '/terms'),
+                ..onTap = () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text('Terms and Conditions coming soon')),
+                  );
+                },
             ),
             const TextSpan(text: ' and '),
             TextSpan(
@@ -138,7 +148,11 @@ class TAndC extends StatelessWidget {
                 decoration: TextDecoration.underline,
               ),
               recognizer: TapGestureRecognizer()
-                ..onTap = () => Navigator.pushNamed(context, '/policy'),
+                ..onTap = () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text('Privacy Policy coming soon')),
+                  );
+                },
             ),
           ],
         ),
@@ -147,23 +161,25 @@ class TAndC extends StatelessWidget {
   }
 }
 
-class SingUpForm extends StatelessWidget {
-  const SingUpForm({
-    super.key,
+class _SignUpForm extends StatelessWidget {
+  const _SignUpForm({
     required this.formKey,
     required this.formNotifier,
     required this.formState,
+    required this.passwordFocusNode,
+    required this.confirmPasswordFocusNode,
   });
 
   final GlobalKey<FormState> formKey;
   final SignUpFormNotifier formNotifier;
   final SignUpFormState formState;
+  final FocusNode passwordFocusNode;
+  final FocusNode confirmPasswordFocusNode;
 
   @override
   Widget build(BuildContext context) {
     return Form(
       key: formKey,
-      autovalidateMode: AutovalidateMode.always,
       child: AutofillGroup(
         child: Column(
           children: [
@@ -185,18 +201,24 @@ class SingUpForm extends StatelessWidget {
               obscureText: formState.obscurePassword,
               toggleVisibility: formNotifier.togglePasswordVisibility,
               labelText: 'Password',
+              focusNode: passwordFocusNode,
+              textInputAction: TextInputAction.next,
+              onFieldSubmitted: (_) {
+                FocusScope.of(context).requestFocus(confirmPasswordFocusNode);
+              },
             ),
             SizedBox(height: context.dynamicScreenHeight(15)),
             PasswordFormField(
-              onChanged: (value) => formNotifier.validatePassword(value),
-              onSaved: (value) => {},
-              validator: (value) => null,
-              // formNotifier.validatePasswordMatch(value ?? ""),
+              onChanged: (value) {},
+              onSaved: (value) {},
+              validator: (value) => formNotifier.validatePasswordMatch(value),
               obscureText: formState.obscurePassword,
               toggleVisibility: formNotifier.togglePasswordVisibility,
               labelText: 'Confirm Password',
+              focusNode: confirmPasswordFocusNode,
+              textInputAction: TextInputAction.done,
             ),
-            // FormError(errors: formState.errors),
+            FormError(errors: formState.errors),
 
             SizedBox(height: context.dynamicScreenHeight(25)),
             DefaultButton(
@@ -205,8 +227,13 @@ class SingUpForm extends StatelessWidget {
                 final form = formKey.currentState;
 
                 if (form != null && form.validate()) {
-                  formNotifier.setLoading(false);
-                  Navigator.pushNamed(context, Routes.setupProfileScreen);
+                  form.save();
+                  formNotifier.setLoading(true);
+                  await Future.delayed(const Duration(seconds: 1));
+                  if (context.mounted) {
+                    formNotifier.setLoading(false);
+                    Navigator.pushNamed(context, Routes.setupProfileScreen);
+                  }
                 }
               },
               text: "Sign Up",

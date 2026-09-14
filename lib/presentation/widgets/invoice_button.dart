@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lance_box/app.dart';
-import 'package:lance_box/states/invoice_state.dart';
 
 class InvoiceButton extends StatelessWidget {
   final String titleLabel;
@@ -10,6 +8,7 @@ class InvoiceButton extends StatelessWidget {
   final bool isSelected;
   final bool useInkwell;
   final VoidCallback onPressed;
+  final String valueLabel;
 
   const InvoiceButton({
     super.key,
@@ -18,6 +17,7 @@ class InvoiceButton extends StatelessWidget {
     required this.isSelected,
     required this.onPressed,
     required this.useInkwell,
+    this.valueLabel = "0",
   });
 
   @override
@@ -27,7 +27,8 @@ class InvoiceButton extends StatelessWidget {
         height: context.dynamicScreenHeight(140),
         child: TextButton(
             style: TextButton.styleFrom(
-              foregroundColor: Colors.white,
+              foregroundColor:
+                  isSelected ? AppColors.white : AppColors.secondary,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -47,7 +48,10 @@ class InvoiceButton extends StatelessWidget {
                   if (!useInkwell)
                     SvgPicture.asset(
                       ImagesPaths.plus,
-                      color: isSelected ? AppColors.white : AppColors.secondary,
+                      colorFilter: ColorFilter.mode(
+                        isSelected ? AppColors.white : AppColors.secondary,
+                        BlendMode.srcIn,
+                      ),
                     ),
                   Text(
                     titleLabel,
@@ -58,7 +62,7 @@ class InvoiceButton extends StatelessWidget {
                   ),
                   if (useInkwell)
                     Text(
-                      "0",
+                      valueLabel,
                       style: context.textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w600,
                         color:

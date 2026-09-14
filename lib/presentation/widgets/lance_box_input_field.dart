@@ -5,48 +5,37 @@ class LanceIBoxInputField extends StatelessWidget {
   final Function(String?) onSaved;
   final Function(String) onChanged;
   final String? Function(String?)? validator;
-  final String labelText; // Add labelText to pass custom text
+  final String labelText;
   final TextInputType inputType;
   final String hintText;
   final List<String> autoFills;
   final bool textCaps;
   final double percentScreenWidth;
 
-  const LanceIBoxInputField(
-      {super.key,
-      required this.onSaved,
-      required this.onChanged,
-      required this.validator,
-      required this.labelText, // Initialize labelText
-      required this.inputType,
-      required this.hintText,
-      required this.autoFills,
-      this.percentScreenWidth = 1.0,
-      this.textCaps = false});
+  const LanceIBoxInputField({
+    super.key,
+    required this.onSaved,
+    required this.onChanged,
+    required this.validator,
+    required this.labelText,
+    required this.inputType,
+    required this.hintText,
+    required this.autoFills,
+    this.percentScreenWidth = 1.0,
+    this.textCaps = false,
+  });
 
   @override
   Widget build(BuildContext context) {
-    const outlineInputBorder = OutlineInputBorder(
-      borderRadius: BorderRadius.all(
-        Radius.circular(15),
-      ),
-      borderSide: BorderSide(
-        color: AppColors.borderColor,
-        width: 2,
-      ),
-    );
-
     return Align(
       alignment: Alignment.centerLeft,
       child: SizedBox(
-        width: percentScreenWidth != 1.0
-            ? context.percentScreenWidth(percentScreenWidth)
-            : context.maxScreenWidth(),
+        width: context.percentScreenWidth(percentScreenWidth),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              labelText, // The custom label text
+              labelText,
               style: context.textTheme.bodyMedium
                   ?.copyWith(fontWeight: FontWeight.w500),
             ),
@@ -62,12 +51,17 @@ class LanceIBoxInputField extends StatelessWidget {
                   textCaps ? TextCapitalization.words : TextCapitalization.none,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                enabledBorder: outlineInputBorder,
-                focusedBorder: outlineInputBorder,
+                enabledBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  borderSide: BorderSide(color: AppColors.borderColor, width: 2),
+                ),
+                focusedBorder: const OutlineInputBorder(
+                  borderRadius: BorderRadius.all(Radius.circular(15)),
+                  borderSide: BorderSide(color: AppColors.primary, width: 2),
+                ),
                 hintText: hintText,
-                floatingLabelBehavior: FloatingLabelBehavior.never,
-                contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 15.0, vertical: 15.0),
+                contentPadding:
+                    const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
                 hintStyle: const TextStyle(
                   color: AppColors.disabled,
                   fontSize: 15.0,

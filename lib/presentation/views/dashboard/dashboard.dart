@@ -9,17 +9,16 @@ import 'settings_screen.dart';
 class Dashboard extends ConsumerWidget {
   const Dashboard({super.key});
 
+  static const _screens = <Widget>[
+    InvoiceScreen(),
+    ProfileScreen(),
+    ReceiptScreen(),
+    SettingsScreen(),
+  ];
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    // Watch the selectedIndexProvider to get the current index
     final selectedIndex = ref.watch(selectedIndexProvider);
-
-    final List<Widget> screens = [
-      const InvoiceScreen(),
-      const ProfileScreen(),
-      const ReceiptScreen(),
-      const SettingsScreen(),
-    ];
 
     return Scaffold(
       appBar: AppBar(
@@ -32,10 +31,12 @@ class Dashboard extends ConsumerWidget {
           Scaffold.of(context).closeDrawer();
         },
       ),
-      body: screens[selectedIndex], // Display the selected screen
+      body: IndexedStack(
+        index: selectedIndex,
+        children: _screens,
+      ),
     );
   }
 }
-
 
 final selectedIndexProvider = StateProvider<int>((ref) => 0);

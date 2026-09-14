@@ -1,12 +1,10 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lance_box/app.dart';
 
 import '../../../states/set_up_state.dart';
 import '../../../utils/image_utils.dart';
-import '../../widgets/dashed_rect_painter.dart';
 
 class ImageUploadSection extends StatelessWidget {
   const ImageUploadSection({
@@ -18,21 +16,32 @@ class ImageUploadSection extends StatelessWidget {
   final SetUpStateModel setUpProfileState;
   final SetUpState setUpProfileNotifier;
 
+  String _getStatusLabel() {
+    switch (setUpProfileState.uploadState) {
+      case UploadingState.uploading:
+        return "Uploading image...";
+      case UploadingState.uploaded:
+        return "Upload Successful";
+      case UploadingState.notUploading:
+        return "Drag or Select a file";
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Center(
       child: GestureDetector(
         onTap: setUpProfileState.uploadState == UploadingState.uploading
-            ? null // Disable when uploading
+            ? null
             : () async {
-          bool uploaded = await ImageUtils.getImage(
-              ImageSource.gallery, setUpProfileNotifier);
-          if (uploaded) {
-            setUpProfileNotifier.setUploading(UploadingState.uploaded);
-          }
-        },
+                bool uploaded = await ImageUtils.getImage(
+                    ImageSource.gallery, setUpProfileNotifier);
+                if (uploaded) {
+                  setUpProfileNotifier.setUploading(UploadingState.uploaded);
+                }
+              },
         child: Container(
-          width: context.dynamicScreenWidth(400),
+          width: double.infinity,
           height: context.dynamicScreenHeight(120),
           decoration: BoxDecoration(
             border: Border.all(width: 2, color: Colors.transparent),
@@ -55,11 +64,7 @@ class ImageUploadSection extends StatelessWidget {
                   SvgPicture.asset(ImagesPaths.gallery, height: 40, width: 40),
                 const SizedBox(height: 10),
                 Text(
-                  setUpProfileState.uploadState == UploadingState.uploading
-                      ? "Uploading image..."
-                      : setUpProfileState.uploadState == UploadingState.uploaded
-                      ? "Upload Successful"
-                      : "Drag or Select a file",
+                  _getStatusLabel(),
                   style: context.textTheme.bodyMedium?.copyWith(
                     color: AppColors.disabled,
                   ),

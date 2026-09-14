@@ -26,32 +26,29 @@ class DefaultButton2 extends StatelessWidget {
       height: context.dynamicScreenHeight(48),
       child: TextButton(
         style: TextButton.styleFrom(
-          foregroundColor: Colors.white,
+          foregroundColor: labelColor,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(30),
-            side: BorderSide(
-              color:
-                  outlineBorder ? AppColors.primary : const Color(0xFF000000),
-              width: outlineBorder ? 2 : 0
-            ),
+            side: outlineBorder
+                ? const BorderSide(color: AppColors.primary, width: 2)
+                : BorderSide.none,
           ),
           backgroundColor: buttonColor,
         ),
-        onPressed: isLoading ? null : onPressed, // Disable button if loading
+        onPressed: isLoading ? null : onPressed,
         child: isLoading
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(
+                  SizedBox(
                     height: 25,
                     width: 25,
                     child: CircularProgressIndicator(
-                      color: AppColors.white,
+                      color: labelColor,
                       strokeWidth: 2.5,
                     ),
                   ),
-                  const SizedBox(
-                      width: 10), // Spacing between the progress bar and text
+                  const SizedBox(width: 10),
                   Text(
                     text,
                     style: context.textTheme.titleSmall?.copyWith(
@@ -63,8 +60,10 @@ class DefaultButton2 extends StatelessWidget {
               )
             : Text(
                 text,
-                style: context.textTheme.titleSmall
-                    ?.copyWith(fontWeight: FontWeight.w600, color: labelColor),
+                style: context.textTheme.titleSmall?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: labelColor,
+                ),
               ),
       ),
     );

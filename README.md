@@ -1,65 +1,44 @@
-# LanceBox ReadMe
+# LanceBox
 
-LanceBox is a mobile app project suitable as a sample app for commercial banks. It helps customers view their invoices and onboard themselves as customers of the bank. This comprehensive guide provides everything you need to know to get started with the project, from installation instructions to a detailed description of its features.
-
-## Table of Contents
-
-- [Features](#features)
-- [Installation](#installation)
-   - [Prerequisites](#prerequisites)
-   - [Clone the Repository](#clone-the-repository)
-   - [Configuration](#configuration)
-   - [Build and Run](#build-and-run)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [License](#license)
+LanceBox is a simple mobile invoicing app built with Flutter for PrimeTrust Bank customers. It provides onboarding, profile setup, and invoice creation features, suitable as a demonstration of a commercial banking digital solution.
 
 ## Features
 
-Key features and functionalities of LanceBox:
-
-- **Sign-Up Screen:** New customers can open accounts using their email and password.
-- **Onboarding Screen:** Captures basic details of the customer during account creation.
-- **Customer Dashboard:** Provides a comprehensive view for managing different app features.
+- **Sign-Up Screen:** New customers can register using their email and password.
+- **Onboarding Screen:** Captures basic details (logo upload + account type selection) during account creation.
+- **Customer Dashboard:** Provides navigation across Invoices, Profile, Receipts, and Settings.
+- **Invoice Creation:** Multi-step flow — invoice details, bank details, and PDF preview.
+- **Form Validation:** Email/password validation with match checking and inline error messages.
 
 ### Screenshots
-![Business Selection](screenshots/SideDrawer.png)
+
+![Side Drawer](screenshots/SideDrawer.png)
 ![Business Selection](screenshots/BusinessSelection.png)
 ![Dashboard Home](screenshots/DashboardHome.png)
-![Image Uplaoding](screenshots/ImageUploading.png)
-![ProfileSetup](screenshots/ProfileSetup.png)
-![SignUp](screenshots/Signup.png)
+![Image Uploading](screenshots/ImageUploading.png)
+![Profile Setup](screenshots/ProfileSetup.png)
+![Sign Up](screenshots/Signup.png)
 ![Upload Success](screenshots/UploadSuccess.png)
-
-
 
 ## Technologies Used
 
 - **Flutter:** For building the cross-platform mobile application.
 - **Dart:** Programming language used in Flutter development.
 - **Riverpod:** Used for state management in this project.
-- **Architecture:** Built using MVVM architecture.
+- **Architecture:** Built using MVVM architecture (state notifiers as ViewModels, widgets as Views).
 
 ## Installation
 
-Follow these steps to install and run LanceBox on your system.
-
 ### Prerequisites
 
-Before you begin, ensure you have the following dependencies and tools installed:
-
-<a href="https://docs.flutter.dev/get-started/install" target="_blank">Flutter SDK</a>
-<a href="https://dart.dev/get-dart" target="_blank">Dart SDK</a>
-
+- [Flutter SDK](https://docs.flutter.dev/get-started/install)
+- [Dart SDK](https://dart.dev/get-dart)
 - An IDE (e.g., Visual Studio Code, Android Studio)
 
 ### Clone the Repository
 
-1. Open your terminal or command prompt.
-2. Use the following command to clone the LanceBox repository:
-
 ```bash
-git clone https://github.com/jayhymn/lancebox.git
+git clone https://github.com/Jayhymn/lancebox.git
 ```
 
 ### Configuration
@@ -67,7 +46,7 @@ git clone https://github.com/jayhymn/lancebox.git
 1. Change your working directory to the cloned repository:
 
 ```bash
-cd lance_box
+cd lancebox
 ```
 
 2. Ensure you have the necessary Flutter packages installed:
@@ -76,24 +55,33 @@ cd lance_box
 flutter pub get
 ```
 
-3. (Optional) Configure environment variables or API keys if required.
-
 ### Build and Run
 
 1. Connect your physical device or start an emulator.
-2. To build and run the project, use the following command:
+2. To build and run the project:
 
 ```bash
 flutter run
 ```
 
-This will build the project and install it on your connected device or emulator.
+## Project Structure
+
+```
+lib/
+├── main.dart             # App entry point + route table
+├── states/               # Riverpod StateNotifier ViewModels
+├── presentation/
+│   ├── views/            # Screens (auth, setup, dashboard, invoice flow)
+│   └── widgets/          # Reusable UI widgets
+├── shared/               # Theme, constants, routes
+└── utils/                # Helpers (image picker/upload)
+```
 
 ## Usage
 
-1. Upon launching the app, you can create a new account or sign in as an existing user.
-2. New users are taken through the onboarding process to fill in their basic details.
-3. The dashboard provides access to key features like profile management, settings, and viewing invoices.
+1. Upon launching the app, create a new account using the sign-up form.
+2. New users are taken through the onboarding process to fill in their profile details.
+3. The dashboard provides access to invoice creation, profile, receipts, and settings.
 
 ## Contributing
 
@@ -101,7 +89,6 @@ Contributions are welcome! Please feel free to submit a pull request or create a
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/jayhymn/lancebox/blob/main/LICENSE) file for details.
+This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
 
-Thank you for choosing LanceBox! If you encounter any issues or have suggestions for improvements, please don't hesitate to [create an issue](https://github.com/jayhymn/lancebox/issues).
-
+Thank you for choosing LanceBox! If you encounter any issues or have suggestions for improvements, please don't hesitate to [create an issue](https://github.com/Jayhymn/lancebox/issues).

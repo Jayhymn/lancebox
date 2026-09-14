@@ -1,32 +1,10 @@
 import 'package:flutter/material.dart';
 import 'dart:math' as math;
 
-
-class MyWidget extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: SizedBox(
-          width: 200.0, // specify the width here
-          height: 100.0, // specify the height here
-          child: CustomPaint(
-            painter: DashRectPainter(
-              color: Colors.blue,
-              strokeWidth: 2.0,
-              gap: 5.0,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
-
 class DashRectPainter extends CustomPainter {
-  double strokeWidth;
-  Color color;
-  double gap;
+  final double strokeWidth;
+  final Color color;
+  final double gap;
 
   DashRectPainter({
     this.strokeWidth = 5.0,
@@ -36,69 +14,66 @@ class DashRectPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    Paint dashedPaint = Paint()
+    if (size.width <= 0 || size.height <= 0) return;
+
+    final dashedPaint = Paint()
       ..color = color
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
 
-    double x = size.width;
-    double y = size.height;
+    final x = size.width;
+    final y = size.height;
 
-    Path _topPath = getDashedPath(
-      a: const math.Point(0, 0),
-      b: math.Point(x, 0),
+    final topPath = getDashedPath(
+      a: const math.Point(0.0, 0.0),
+      b: math.Point(x, 0.0),
       gap: gap,
     );
 
-    Path _rightPath = getDashedPath(
-      a: math.Point(x, 0),
+    final rightPath = getDashedPath(
+      a: math.Point(x, 0.0),
       b: math.Point(x, y),
       gap: gap,
     );
 
-    Path _bottomPath = getDashedPath(
-      a: math.Point(0, y),
+    final bottomPath = getDashedPath(
+      a: math.Point(0.0, y),
       b: math.Point(x, y),
       gap: gap,
     );
 
-    Path _leftPath = getDashedPath(
-      a: math.Point(0, 0),
-      b: math.Point(0.001, y),
+    final leftPath = getDashedPath(
+      a: const math.Point(0.0, 0.0),
+      b: math.Point(0.0, y),
       gap: gap,
     );
 
-    canvas.drawPath(_topPath, dashedPaint);
-    canvas.drawPath(_rightPath, dashedPaint);
-    canvas.drawPath(_bottomPath, dashedPaint);
-    canvas.drawPath(_leftPath, dashedPaint);
+    canvas.drawPath(topPath, dashedPaint);
+    canvas.drawPath(rightPath, dashedPaint);
+    canvas.drawPath(bottomPath, dashedPaint);
+    canvas.drawPath(leftPath, dashedPaint);
   }
 
   Path getDashedPath({
     required math.Point<double> a,
     required math.Point<double> b,
-    required gap,
+    required double gap,
   }) {
-    Size size = Size(b.x - a.x, b.y - a.y);
-    Path path = Path();
+    final size = Size(b.x - a.x, b.y - a.y);
+    final path = Path();
     path.moveTo(a.x, a.y);
     bool shouldDraw = true;
-    math.Point currentPoint = math.Point(a.x, a.y);
+    var currentPoint = math.Point(a.x, a.y);
 
-    num radians = math.atan(size.height / size.width);
+    final radians = math.atan(size.height / size.width);
 
-    num dx = math.cos(radians) * gap < 0
-        ? math.cos(radians) * gap * -1
-        : math.cos(radians) * gap;
-
-    num dy = math.sin(radians) * gap < 0
-        ? math.sin(radians) * gap * -1
-        : math.sin(radians) * gap;
+    final dx = (math.cos(radians) * gap).abs();
+    final dy = (math.sin(radians) * gap).abs();
 
     while (currentPoint.x <= b.x && currentPoint.y <= b.y) {
       shouldDraw
-          ? path.lineTo(currentPoint.x.toDouble(), currentPoint.y.toDouble())
-          : path.moveTo(currentPoint.x.toDouble(), currentPoint.y.toDouble());
+          ? path.lineTo(currentPoint.x, currentPoint.y)
+          : path.moveTo(currentPoint.x, currentPoint.y);
       shouldDraw = !shouldDraw;
       currentPoint = math.Point(
         currentPoint.x + dx,
@@ -109,7 +84,9 @@ class DashRectPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(CustomPainter oldDelegate) {
-    return true;
+  bool shouldRepaint(DashRectPainter oldDelegate) {
+    return oldDelegate.strokeWidth != strokeWidth ||
+        oldDelegate.color != color ||
+        oldDelegate.gap != gap;
   }
 }

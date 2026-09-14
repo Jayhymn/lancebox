@@ -3,11 +3,6 @@ import 'package:flutter/material.dart';
 import 'app_colors.dart';
 import 'app_fonts.dart';
 
-// ThemeData(
-// colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-// useMaterial3: true,
-// )
-
 class AppThemeData {
   static ThemeData lightTheme = ThemeData(
     scaffoldBackgroundColor: AppColors.white,
@@ -26,10 +21,53 @@ class AppThemeData {
       onSurface: AppColors.black,
     ),
     textTheme: _lightTextTheme(ThemeData.light().textTheme),
+    inputDecorationTheme: InputDecorationTheme(
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: const BorderSide(
+          color: AppColors.borderColor,
+          width: 2,
+        ),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: const BorderSide(
+          color: AppColors.borderColor,
+          width: 2,
+        ),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: const BorderSide(
+          color: AppColors.primary,
+          width: 2,
+        ),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: const BorderSide(
+          color: AppColors.error,
+          width: 1.5,
+        ),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(15),
+        borderSide: const BorderSide(
+          color: AppColors.error,
+          width: 2,
+        ),
+      ),
+      contentPadding:
+          const EdgeInsets.symmetric(horizontal: 15.0, vertical: 15.0),
+      floatingLabelBehavior: FloatingLabelBehavior.never,
+      hintStyle: const TextStyle(
+        color: AppColors.disabled,
+        fontSize: 15.0,
+      ),
+    ),
   );
 }
 
-// -------- TEXT THEME (LIGHT) ---------------------
 TextTheme _lightTextTheme(TextTheme textTheme) {
   return textTheme.copyWith(
     bodySmall: textTheme.bodySmall?.copyWith(
@@ -70,13 +108,13 @@ TextTheme _lightTextTheme(TextTheme textTheme) {
     ),
     labelMedium: textTheme.labelMedium?.copyWith(
       fontFamily: AppFonts.plusJakartaSans,
-      fontSize: 30,
+      fontSize: 14,
       color: AppColors.black,
       fontWeight: FontWeight.w600,
     ),
     labelLarge: textTheme.labelLarge?.copyWith(
       fontFamily: AppFonts.pretendard,
-      fontSize: 30,
+      fontSize: 16,
       color: AppColors.black,
       fontWeight: FontWeight.w600,
     ),
