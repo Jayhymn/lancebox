@@ -1,20 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:lance_box/app.dart';
-import 'package:lance_box/presentation/widgets/default_button.dart';
-import 'package:lance_box/presentation/widgets/default_button_2.dart';
-import 'package:lance_box/presentation/widgets/step_indicator.dart';
 import 'package:lance_box/shared/constants/routes.dart';
 import 'package:lance_box/states/set_up_state.dart';
 
-import '../../utils/image_utils.dart';
-import '../widgets/dashed_rect_painter.dart';
-import '../widgets/selection_button.dart';
 import 'auth/account_selection_section.dart';
 import 'auth/image_upload_section.dart';
 import 'dashboard/invoice/widgets/progress_section.dart';
+import 'dashboard/invoice/widgets/step_progress.dart';
 
 class SetUpProfileScreen extends ConsumerWidget {
   const SetUpProfileScreen({super.key});
@@ -46,18 +40,18 @@ class SetUpProfileScreen extends ConsumerWidget {
                 Align(
                   alignment: Alignment.centerLeft,
                   child: SizedBox(
-                    width: context.dynamicScreenWidth(215),
+                    width: context.percentScreenWidth(0.6),
                     child: const ProgressRow(
                       progressItems: [
-                        {'label': 'Set up Profile'},
-                        {'label': 'Personal Details', 'isGreyed': false},
+                        StepProgress(label: 'Set up Profile'),
+                        StepProgress(label: 'Personal Details', isGreyed: false),
                       ],
                       isFinalStep: false,
                     ),
                   ),
                 ),
                 SizedBox(
-                  width: context.dynamicScreenWidth(400),
+                  width: double.infinity,
                   child: Text(
                     "Upload your logo/personal branding",
                     style: context.textTheme.bodyMedium,
@@ -83,44 +77,44 @@ class SetUpProfileScreen extends ConsumerWidget {
                   setUpProfileNotifier: setUpProfileNotifier,
                 ),
                 SizedBox(
-                  width: context.dynamicScreenWidth(400),
+                  width: double.infinity,
                   child: DefaultButton2(
                     isLoading: setUpProfileState.isLoading,
-                    onPressed: setUpProfileState.selection == -1
-                        ? () {} // Disable button, using an empty function
-                        : () {
+                    onPressed: !setUpProfileState.hasSelection
+                        ? () {}
+                        : () async {
                             setUpProfileNotifier.setLoading(true);
-                            Future.delayed(const Duration(seconds: 5));
-                            Navigator.pushNamed(context, Routes.dashboard);
+                            await Future.delayed(const Duration(seconds: 2));
+                            if (context.mounted) {
+                              setUpProfileNotifier.setLoading(false);
+                              Navigator.pushNamed(context, Routes.dashboard);
+                            }
                           },
                     text: "Proceed",
                     labelColor: AppColors.white,
-                    buttonColor: setUpProfileState.selection == -1
-                        ? AppColors
-                            .disabled // Grey out the button when no selection
-                        : AppColors.primary, // Active button color
+                    buttonColor: !setUpProfileState.hasSelection
+                        ? AppColors.disabled
+                        : AppColors.primary,
                   ),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     Navigator.pushReplacementNamed(context, Routes.dashboard);
                   },
-                  child: InkWell(
-                    child: Text(
-                      "Skip for now",
-                      style: context.textTheme.titleMedium?.copyWith(
-                        shadows: [
-                          const Shadow(
-                              color: AppColors.primary, offset: Offset(0, -5))
-                        ],
-                        fontSize: 16,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.transparent,
-                        decoration: TextDecoration.underline,
-                        decorationColor: AppColors.primary,
-                        decorationThickness: 1.5,
-                        decorationStyle: TextDecorationStyle.solid,
-                      ),
+                  child: Text(
+                    "Skip for now",
+                    style: context.textTheme.titleMedium?.copyWith(
+                      shadows: [
+                        const Shadow(
+                            color: AppColors.primary, offset: Offset(0, -5))
+                      ],
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: Colors.transparent,
+                      decoration: TextDecoration.underline,
+                      decorationColor: AppColors.primary,
+                      decorationThickness: 1.5,
+                      decorationStyle: TextDecorationStyle.solid,
                     ),
                   ),
                 )

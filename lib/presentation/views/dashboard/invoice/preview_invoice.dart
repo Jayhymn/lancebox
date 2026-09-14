@@ -1,20 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lance_box/app.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice/widgets/progress_section.dart';
-import 'package:lance_box/presentation/widgets/default_button.dart';
-import 'package:lance_box/presentation/widgets/default_button_2.dart';
-import 'package:lance_box/presentation/widgets/lance_box_input_field.dart';
-import 'package:lance_box/presentation/widgets/step_indicator.dart';
-import 'package:shimmer/shimmer.dart';
+import 'package:lance_box/presentation/views/dashboard/invoice/widgets/step_progress.dart';
+import 'package:lance_box/states/invoice_state.dart';
+import 'package:lance_box/utils/pdf_generator.dart';
+import 'package:printing/printing.dart';
 
 class PreviewInvoiceScreen extends ConsumerWidget {
   const PreviewInvoiceScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final draft = ref.watch(invoiceDraftProvider);
+
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -32,7 +32,8 @@ class PreviewInvoiceScreen extends ConsumerWidget {
                   },
                   child: SvgPicture.asset(
                     ImagesPaths.close,
-                    color: Colors.black45,
+                    colorFilter: const ColorFilter.mode(
+                        Colors.black45, BlendMode.srcIn),
                   ),
                 ),
                 Row(
@@ -44,12 +45,17 @@ class PreviewInvoiceScreen extends ConsumerWidget {
                       style: context.textTheme.titleMedium,
                     ),
                     InkWell(
+                      onTap: () {
+                        Navigator.pop(context);
+                        Navigator.pop(context);
+                      },
                       child: Text(
                         "Edit Invoice",
                         style: context.textTheme.titleMedium?.copyWith(
                           shadows: [
                             const Shadow(
-                                color: AppColors.primary, offset: Offset(0, -5))
+                                color: AppColors.primary,
+                                offset: Offset(0, -5))
                           ],
                           fontSize: 16,
                           fontWeight: FontWeight.w500,
@@ -65,61 +71,43 @@ class PreviewInvoiceScreen extends ConsumerWidget {
                 ),
                 const ProgressRow(
                   progressItems: [
-                    {'label': 'Invoice Details'},
-                    {'label': 'Bank Details'},
-                    {'label': 'Preview Invoice'},
-                    {
-                      'label':
-                          'Preview Invoice Download Invoice/Send to Client',
-                      'isGreyed': false,
-                      'flex': 2
-                    },
+                    StepProgress(label: 'Invoice Details'),
+                    StepProgress(label: 'Bank Details'),
+                    StepProgress(label: 'Preview Invoice'),
+                    StepProgress(
+                      label: 'Preview Invoice Download Invoice/Send to Client',
+                      isGreyed: false,
+                      flex: 2,
+                    ),
                   ],
                   isFinalStep: true,
                 ),
                 Expanded(
-                  child: true
-                      ? Shimmer.fromColors(
-                          baseColor: AppColors.offWhite,
-                          highlightColor: AppColors.white,
-                          child: const Card(
-                            elevation: 3,
-                            child: PDFView(
-                              filePath: "pdfUrl",
-                            ),
-                          ),
-                        )
-                      : Card(
-                          elevation: 3,
-                          child: PDFView(
-                            filePath: "pdfUrl",
-                          ),
-                        ),
+                  child: Card(
+                    elevation: 3,
+                    clipBehavior: Clip.antiAlias,
+                    child: PdfPreview(
+                      canChangePageFormat: false,
+                      canChangeOrientation: false,
+                      canDebug: false,
+                      build: (_) => PdfGenerator.forDraft(draft),
+                    ),
+                  ),
                 ),
                 DefaultButton2(
                   isLoading: false,
-                  onPressed: () {
-                    // if (!formState.isLoading &&
-                    //     formNotifier.submitForm()) {
-                    // Navigator.pushNamed(context, '/previewInvoice');
-                    // }
+                  onPressed: () async {
+                    final bytes = await PdfGenerator.forDraft(draft);
+                    if (!context.mounted) return;
+                    await Printing.sharePdf(
+                      bytes: bytes,
+                      filename: 'lancebox_invoice_'
+                          '${draft.invoiceNumber.isNotEmpty ? draft.invoiceNumber : 'draft'}.pdf',
+                    );
                   },
                   labelColor: AppColors.white,
-                  text: "Download Pdf",
-                  buttonColor: AppColors.primary,
-                ),
-                DefaultButton2(
-                  isLoading: false,
-                  onPressed: () {
-                    // if (!formState.isLoading &&
-                    //     formNotifier.submitForm()) {
-                    // Navigator.pushNamed(context, '/previewInvoice');
-                    // }
-                  },
-                  outlineBorder: true,
-                  labelColor: AppColors.primary,
                   text: "Send to Client Mail",
-                  buttonColor: AppColors.white,
+                  buttonColor: AppColors.primary,
                 ),
                 SizedBox(
                   height: context.dynamicScreenHeight(20),

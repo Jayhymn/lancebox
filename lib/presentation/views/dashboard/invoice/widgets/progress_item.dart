@@ -1,7 +1,6 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lance_box/app.dart';
-import 'package:lance_box/presentation/widgets/step_indicator.dart';
 
 class ProgressItem extends StatelessWidget {
   final String progressLabel;

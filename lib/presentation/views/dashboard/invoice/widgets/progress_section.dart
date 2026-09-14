@@ -2,9 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lance_box/app.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice/widgets/progress_item.dart';
+import 'package:lance_box/presentation/views/dashboard/invoice/widgets/step_progress.dart';
 
 class ProgressRow extends StatelessWidget {
-  final List<Map<String, dynamic>> progressItems;
+  final List<StepProgress> progressItems;
   final bool isFinalStep;
 
   const ProgressRow({
@@ -20,17 +21,13 @@ class ProgressRow extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         ...progressItems.map(
-              (item) {
-            return ProgressItem(
-              progressLabel: item['label'],
-              isGreyed: item['isGreyed'] ?? true,
-              flex: item['flex'] ?? 1,
-            );
-          },
+          (item) => ProgressItem(
+            progressLabel: item.label,
+            isGreyed: item.isGreyed,
+            flex: item.flex,
+          ),
         ),
-
-        if (isFinalStep)
-          SvgPicture.asset(ImagesPaths.success),
+        if (isFinalStep) SvgPicture.asset(ImagesPaths.success),
       ],
     );
   }
