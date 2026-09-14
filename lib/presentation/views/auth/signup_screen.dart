@@ -8,6 +8,7 @@ import 'package:lance_box/app.dart';
 import 'package:lance_box/presentation/widgets/default_button.dart';
 import 'package:lance_box/presentation/widgets/email_form_field.dart';
 import 'package:lance_box/presentation/widgets/password_form_field.dart';
+import 'package:lance_box/shared/constants/routes.dart';
 
 import '../../../states/sign_up_state.dart';
 
@@ -205,7 +206,7 @@ class SingUpForm extends StatelessWidget {
 
                 if (form != null && form.validate()) {
                   formNotifier.setLoading(false);
-                  Navigator.pushNamed(context, '/setup');
+                  Navigator.pushNamed(context, Routes.setupProfileScreen);
                 }
               },
               text: "Sign Up",

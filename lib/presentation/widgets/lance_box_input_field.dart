@@ -26,6 +26,16 @@ class LanceIBoxInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const outlineInputBorder = OutlineInputBorder(
+      borderRadius: BorderRadius.all(
+        Radius.circular(15),
+      ),
+      borderSide: BorderSide(
+        color: AppColors.borderColor,
+        width: 2,
+      ),
+    );
+
     return Align(
       alignment: Alignment.centerLeft,
       child: SizedBox(
@@ -37,7 +47,8 @@ class LanceIBoxInputField extends StatelessWidget {
           children: [
             Text(
               labelText, // The custom label text
-              style: context.textTheme.bodyMedium,
+              style: context.textTheme.bodyMedium
+                  ?.copyWith(fontWeight: FontWeight.w500),
             ),
             const SizedBox(height: 8),
             TextFormField(
@@ -51,23 +62,8 @@ class LanceIBoxInputField extends StatelessWidget {
                   textCaps ? TextCapitalization.words : TextCapitalization.none,
               decoration: InputDecoration(
                 border: InputBorder.none,
-                enabledBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(
-                      Radius.circular(15),
-                    ),
-                    borderSide: BorderSide(
-                      color: Colors.grey,
-                      width: 0.5,
-                    )),
-                focusedBorder: const OutlineInputBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(15),
-                  ),
-                  borderSide: BorderSide(
-                    color: Colors.grey,
-                    width: 0.5,
-                  ),
-                ),
+                enabledBorder: outlineInputBorder,
+                focusedBorder: outlineInputBorder,
                 hintText: hintText,
                 floatingLabelBehavior: FloatingLabelBehavior.never,
                 contentPadding: const EdgeInsets.symmetric(

@@ -2,16 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:lance_box/app.dart';
-import 'package:lance_box/presentation/views/dashboard/invoice/preview_invoice.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice/widgets/progress_section.dart';
-import 'package:lance_box/presentation/widgets/default_button.dart';
 import 'package:lance_box/presentation/widgets/default_button_2.dart';
 import 'package:lance_box/presentation/widgets/lance_box_input_field.dart';
-import 'package:lance_box/presentation/widgets/step_indicator.dart';
+import 'package:lance_box/shared/constants/routes.dart';
 
 
-class BankDetailsScreen extends ConsumerWidget {
-  const BankDetailsScreen({super.key});
+class AddBankDetailsScreen extends ConsumerWidget {
+  const AddBankDetailsScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -128,7 +126,7 @@ class BankDetailsForm extends StatelessWidget {
             onPressed: () {
               // if (!formState.isLoading &&
               //     formNotifier.submitForm()) {
-              Navigator.pushNamed(context, '/previewInvoice');
+              Navigator.pushNamed(context, Routes.previewInvoiceScreen);
               // }
             },
             labelColor: AppColors.white,

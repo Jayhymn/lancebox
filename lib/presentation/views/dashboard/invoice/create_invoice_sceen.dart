@@ -5,9 +5,10 @@ import 'package:lance_box/app.dart';
 import 'package:lance_box/presentation/views/dashboard/invoice/widgets/progress_section.dart';
 import 'package:lance_box/presentation/widgets/default_button_2.dart';
 import 'package:lance_box/presentation/widgets/lance_box_input_field.dart';
+import 'package:lance_box/shared/constants/routes.dart';
 
-class InvoiceDetailsScreen extends ConsumerWidget {
-  const InvoiceDetailsScreen({super.key});
+class CreateInvoiceScreen extends ConsumerWidget {
+  const CreateInvoiceScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -32,7 +33,7 @@ class InvoiceDetailsScreen extends ConsumerWidget {
                   ),
                 ),
                 Text(
-                  "Invoice Details",
+                  "New Invoice",
                   textAlign: TextAlign.start,
                   style: context.textTheme.titleMedium,
                 ),
@@ -142,8 +143,11 @@ class InvoiceDetailsForm extends StatelessWidget {
               alignment: Alignment.centerLeft,
               child: Text(
                 "Invoice Details",
-                style: context.textTheme.bodyMedium?.copyWith(
-                    fontWeight: FontWeight.w800, color: AppColors.black),
+                style: context.textTheme.bodyLarge?.copyWith(
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.black,
+                  fontSize: 17,
+                ),
               ),
             ),
             LanceIBoxInputField(
@@ -224,7 +228,7 @@ class InvoiceDetailsForm extends StatelessWidget {
             ),
             GestureDetector(
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/dashboard');
+                Navigator.pushReplacementNamed(context, Routes.dashboard);
               },
               child: InkWell(
                 child: Align(
@@ -254,22 +258,40 @@ class InvoiceDetailsForm extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("VAT", style: context.textTheme.bodyMedium,),
-                Text("N 0.00", style: context.textTheme.bodyMedium,),
+                Text(
+                  "VAT",
+                  style: context.textTheme.bodyMedium,
+                ),
+                Text(
+                  "N 0.00",
+                  style: context.textTheme.bodyMedium,
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Shipping", style: context.textTheme.bodyMedium,),
-                Text("N 0.00", style: context.textTheme.bodyMedium,),
+                Text(
+                  "Shipping",
+                  style: context.textTheme.bodyMedium,
+                ),
+                Text(
+                  "N 0.00",
+                  style: context.textTheme.bodyMedium,
+                ),
               ],
             ),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text("Total", style: context.textTheme.bodyMedium,),
-                Text("N 0.00", style: context.textTheme.bodyMedium,),
+                Text(
+                  "Total",
+                  style: context.textTheme.bodyMedium,
+                ),
+                Text(
+                  "N 0.00",
+                  style: context.textTheme.bodyMedium,
+                ),
               ],
             ),
             SizedBox(
@@ -280,7 +302,7 @@ class InvoiceDetailsForm extends StatelessWidget {
               onPressed: () {
                 // if (!formState.isLoading &&
                 //     formNotifier.submitForm()) {
-                Navigator.pushNamed(context, '/bankDetails');
+                Navigator.pushNamed(context, Routes.addBankDetailsScreen);
                 // }
               },
               labelColor: AppColors.white,

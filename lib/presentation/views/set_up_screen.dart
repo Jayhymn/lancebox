@@ -6,6 +6,7 @@ import 'package:lance_box/app.dart';
 import 'package:lance_box/presentation/widgets/default_button.dart';
 import 'package:lance_box/presentation/widgets/default_button_2.dart';
 import 'package:lance_box/presentation/widgets/step_indicator.dart';
+import 'package:lance_box/shared/constants/routes.dart';
 import 'package:lance_box/states/set_up_state.dart';
 
 import '../../utils/image_utils.dart';
@@ -15,8 +16,8 @@ import 'auth/account_selection_section.dart';
 import 'auth/image_upload_section.dart';
 import 'dashboard/invoice/widgets/progress_section.dart';
 
-class SetUpProfile extends ConsumerWidget {
-  const SetUpProfile({super.key});
+class SetUpProfileScreen extends ConsumerWidget {
+  const SetUpProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -90,7 +91,7 @@ class SetUpProfile extends ConsumerWidget {
                         : () {
                             setUpProfileNotifier.setLoading(true);
                             Future.delayed(const Duration(seconds: 5));
-                            Navigator.pushNamed(context, '/dashboard');
+                            Navigator.pushNamed(context, Routes.dashboard);
                           },
                     text: "Proceed",
                     labelColor: AppColors.white,
@@ -102,7 +103,7 @@ class SetUpProfile extends ConsumerWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.pushReplacementNamed(context, '/dashboard');
+                    Navigator.pushReplacementNamed(context, Routes.dashboard);
                   },
                   child: InkWell(
                     child: Text(

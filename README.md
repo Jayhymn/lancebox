@@ -59,7 +59,7 @@ Before you begin, ensure you have the following dependencies and tools installed
 2. Use the following command to clone the LanceBox repository:
 
 ```bash
-git clone https://github.com/jayhymn/lance_box.git
+git clone https://github.com/jayhymn/lancebox.git
 ```
 
 ### Configuration
@@ -101,7 +101,7 @@ Contributions are welcome! Please feel free to submit a pull request or create a
 
 ## License
 
-This project is licensed under the MIT License. See the [LICENSE](https://github.com/jayhymn/lance_box/blob/main/LICENSE) file for details.
+This project is licensed under the MIT License. See the [LICENSE](https://github.com/jayhymn/lancebox/blob/main/LICENSE) file for details.
 
-Thank you for choosing LanceBox! If you encounter any issues or have suggestions for improvements, please don't hesitate to [create an issue](https://github.com/jayhymn/lance_box/issues).
+Thank you for choosing LanceBox! If you encounter any issues or have suggestions for improvements, please don't hesitate to [create an issue](https://github.com/jayhymn/lancebox/issues).
 

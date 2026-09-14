@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:lance_box/app.dart';
+import 'package:lance_box/shared/constants/routes.dart';
 import 'package:lance_box/states/invoice_state.dart';
 
 import '../../../widgets/invoice_button.dart';
@@ -45,7 +46,7 @@ class InvoiceScreen extends ConsumerWidget {
                     isSelected: invoiceProviderState.selection == 0,
                     onPressed:(){
                       invoiceProviderNotifier.selectCreateInvoice;
-                      Navigator.pushNamed(context, '/invoiceDetails');
+                      Navigator.pushNamed(context, Routes.createInvoiceScreen);
                     },
                     useInkwell: false,
                   ),
