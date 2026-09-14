@@ -195,7 +195,10 @@ class _SignUpForm extends StatelessWidget {
             ),
             SizedBox(height: context.dynamicScreenHeight(15)),
             PasswordFormField(
-              onChanged: (value) => formNotifier.validatePassword(value),
+              onChanged: (value) {
+                formNotifier.updatePassword(value ?? "");
+                formNotifier.validatePassword(value);
+              },
               onSaved: (value) => formNotifier.updatePassword(value ?? ""),
               validator: (value) => formNotifier.validatePassword(value ?? ""),
               obscureText: formState.obscurePassword,

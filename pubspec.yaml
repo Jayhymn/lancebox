@@ -52,21 +52,21 @@ flutter:
    - family: Pretendard
      fonts:
        - asset: assets/fonts/Pretendard-Thin.otf
-       - weight: 100
+         weight: 100
        - asset: assets/fonts/Pretendard-Light.otf
-       - weight: 300
+         weight: 300
        - asset: assets/fonts/Pretendard-Regular.otf
-       - weight: 400
+         weight: 400
        - asset: assets/fonts/Pretendard-Medium.otf
-       - weight: 500
+         weight: 500
        - asset: assets/fonts/Pretendard-SemiBold.otf
-       - weight: 600
+         weight: 600
        - asset: assets/fonts/Pretendard-Bold.otf
-       - weight: 700
+         weight: 700
        - asset: assets/fonts/Pretendard-ExtraBold.otf
-       - weight: 800
+         weight: 800
        - asset: assets/fonts/Pretendard-Black.otf
-       - weight: 900
+         weight: 900
 
    - family: PlusJakartaSans
      fonts:
